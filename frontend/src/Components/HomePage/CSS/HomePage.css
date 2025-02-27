@@ -425,8 +425,8 @@ body {
     background: #222;
     color: white;
     padding: 60px 0;
-    border-top-left-radius: 50% 20%;
-    border-top-right-radius: 50% 20%;
+    border-top-left-radius: 50% 15%;
+    border-top-right-radius: 50% 15%;
 }
 
 .footer-container {
