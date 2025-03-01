@@ -1,7 +1,7 @@
-# Craftique - Handmade Marketplace
+# Handscape - Handmade Marketplace
 
 ## Overview
-**Craftique** is a marketplace for unique, handmade products crafted with passion by artisans worldwide. The website showcases handcrafted goods through a visually appealing interface, providing seamless navigation and an immersive browsing experience.
+**Handscape** is a marketplace for unique, handmade products crafted with passion by artisans worldwide. The website showcases handcrafted goods through a visually appealing interface, providing seamless navigation and an immersive browsing experience.
 
 ## Features of Home Page:
 - **Responsive Navbar:** Includes Home, About Us, Gallery, Services, Testimonials, and Login/Signup options.
