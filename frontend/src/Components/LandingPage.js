@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./CSS/HomePage.css";
+import "./CSS/LandingPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -23,13 +23,13 @@ import services1 from "./Images/Services1.jpeg";
 import services2 from "./Images/Services2.jpeg";
 import services3 from "./Images/Services3.jpeg";
 
-const HomePage = () => {
+const LandingPage = () => {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   // Testimonials data
   const testimonials = [
     {
-      text: "Craftique is amazing! The handmade products are so unique, and the quality is top-notch.",
+      text: "Handscape is amazing! The handmade products are so unique, and the quality is top-notch.",
       author: "Sarah W.",
     },
     {
@@ -106,7 +106,7 @@ const HomePage = () => {
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container">
           <a className="navbar-brand fw-bold" href="#">
-            Craftique
+            Handscape
           </a>
           <button
             className="navbar-toggler"
@@ -196,7 +196,7 @@ const HomePage = () => {
               <h2 className="about-title">ABOUT US</h2>
               <p>Celebrating the art of handmade craftsmanship.</p>
               <p>
-                At Craftique, we bring together skilled artisans and craft lovers,
+                At Handscape, we bring together skilled artisans and craft lovers,
                 curating a collection of unique, handcrafted treasures. From
                 exquisite decor to personalized gifts, each piece reflects the
                 passion and creativity of its maker.
@@ -269,7 +269,7 @@ const HomePage = () => {
       {/* Services Section */}
       <section id="services" className="services">
         <div className="services-container">
-          <h2 className="services-title">Why Choose Craftique?</h2>
+          <h2 className="services-title">Why Choose Handscape?</h2>
           <p className="services-subtitle">
             The ultimate marketplace for unique handcrafted goods.
           </p>
@@ -339,7 +339,7 @@ const HomePage = () => {
           <div className="footer-column">
             <h3>About</h3>
             <p>
-              Craftique is a marketplace for unique, handmade products crafted
+              Handscape is a marketplace for unique, handmade products crafted
               with passion by artisans worldwide.
             </p>
           </div>
@@ -390,7 +390,7 @@ const HomePage = () => {
                 <FontAwesomeIcon icon={faPhone} /> +91 9696969696
               </li>
               <li>
-                <FontAwesomeIcon icon={faEnvelope} /> support@craftique.com
+                <FontAwesomeIcon icon={faEnvelope} /> support@Handscape.com
               </li>
             </ul>
           </div>
@@ -400,4 +400,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default LandingPage;
