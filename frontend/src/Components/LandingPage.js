@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import "./CSS/LandingPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -6,6 +7,7 @@ import {
   faSearch,
   faMapMarkerAlt,
   faPhone,
+  faStore,
   faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -25,7 +27,7 @@ import services3 from "./Images/Services3.jpeg";
 
 const LandingPage = () => {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
-
+  const navigate = useNavigate();
   // Testimonials data
   const testimonials = [
     {
@@ -99,59 +101,96 @@ const LandingPage = () => {
 
     requestAnimationFrame(animation);
   };
+  
+  const handleNavigation = (role) => {
+    // Navigate to the respective login page
+    if (role === "user") {
+      window.location.href = "/login"; // Replace with the actual path
+    } else if (role === "seller") {
+      window.location.href = "/loginseller"; // Replace with the actual path
+    }
+  };
 
   return (
     <div>
       {/* Navbar */}
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="container">
-          <a className="navbar-brand fw-bold" href="#">
-            Handscape
-          </a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-                <a className="nav-link active" href="#heroCarousel">
-                  Home
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#about">
-                  About Us
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#gallery">
-                  Gallery
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#services">
-                  Services
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#testimonials">
-                  Testimonials
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/login">
-                  <FontAwesomeIcon icon={faUser} /> Login/Signup
-                </a>
-              </li>
-            </ul>
-          </div>
+      <div className="container">
+        <a className="navbar-brand fw-bold" href="/">
+          Handscape
+        </a>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ms-auto">
+            <li className="nav-item">
+              <a className="nav-link active" href="#heroCarousel">
+                Home
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#about">
+                About Us
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#gallery">
+                Gallery
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#services">
+                Services
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#testimonials">
+                Testimonials
+              </a>
+            </li>
+            {/* Dropdown for Login/Signup */}
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <FontAwesomeIcon icon={faUser} /> Login/Signup
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a
+                    className="dropdown-item"
+                    href="#"
+                    onClick={() => handleNavigation("user")}
+                  >
+                    <FontAwesomeIcon icon={faUser} /> User
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="dropdown-item"
+                    href="#"
+                    onClick={() => handleNavigation("seller")}
+                  >
+                    <FontAwesomeIcon icon={faStore} /> Seller
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
         </div>
-      </nav>
+      </div>
+    </nav>
 
       {/* Hero Section (Carousel) */}
       <div

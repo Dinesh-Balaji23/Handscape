@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './CSS/Login.css'; // Reusing the same styles
+import './CSS/Form.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Signup = () => {
@@ -74,7 +74,7 @@ const Signup = () => {
   return (
     <div className="login-page">
       <div className="login-card">
-        <h2>Create Account</h2>
+        <h2>Create User Account</h2>
         <div className="logo">H</div>
         <form onSubmit={handleSubmit}>
           <label>Name</label>

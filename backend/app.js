@@ -4,11 +4,6 @@ const cors = require('cors');
 
 const userRouter = require('./routes/userRoutes');
 const sellerRouter = require('./routes/sellerRoutes');
-const productRouter = require('./routes/productRoutes');
-const orderRouter = require('./routes/orderRoutes');
-const cartRouter = require('./routes/cartRoutes');
-const reviewRouter = require('./routes/reviewRoutes');
-const paymentRouter = require('./routes/paymentRoutes');
 
 const app = express();
 const PORT = 9000;
@@ -27,19 +22,13 @@ mongoose.connect('mongodb://127.0.0.1:27017/Handscape')
         console.error('Error connecting to MongoDB:', err.message);
     });
 
-// Middleware and routes setup
+
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
-app.use(userRouter);       // For UserData
-app.use(sellerRouter);     // For SellerData
-app.use(productRouter);    // For Products
-app.use(orderRouter);      // For Orders
-app.use(cartRouter);       // For ShoppingCart
-app.use(reviewRouter);     // For Reviews
-app.use(paymentRouter);    // For Payments
+app.use(userRouter);
+app.use(sellerRouter);
 
-// Start the server
 app.listen(PORT, () => {
     console.log(`App is listening on port ${PORT}`);
 });

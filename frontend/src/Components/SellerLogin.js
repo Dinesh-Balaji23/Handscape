@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './CSS/Login.css';
+import './CSS/Form.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Login = () => {
@@ -29,8 +29,9 @@ const Login = () => {
 
   return (
     <div className="login-page">
+
       <div className="login-card">
-        <h2>Welcome</h2>
+        <h2>Welcome Seller</h2>
         <div className="logo">H</div>
         <form>
           <label>Email</label>
@@ -50,7 +51,7 @@ const Login = () => {
           <button type="submit">LOGIN</button>
         </form>
         <p className="signup-link">
-            Don’t have an account? <Link to="/signup">Sign Up</Link>
+          Don’t have an account? <Link to="/signupseller">Sign Up</Link>
         </p>
       </div>
     </div>
