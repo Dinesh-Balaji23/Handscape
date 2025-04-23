@@ -20,6 +20,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     }
+}, {
+    collection: 'UserData'
 });
 
 module.exports = mongoose.model('UserData', userSchema);

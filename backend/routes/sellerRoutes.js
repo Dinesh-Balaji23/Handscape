@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
+// Make sure you have corresponding controller functions imported
+const { sellerSignup, sellerLogin } = require('../controllers/sellerController');
 
-const { signupSeller, loginSeller } = require('../controllers/sellerController');
-
-router.post('/signupseller', signupSeller);
-router.post('/loginseller', loginSeller);
+router.post('/signupseller', sellerSignup);
+router.post('/loginseller', sellerLogin);
 
 module.exports = router;

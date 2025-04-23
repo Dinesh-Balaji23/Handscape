@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './CSS/Form.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
@@ -8,12 +8,16 @@ const Signup = () => {
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    contact: ''
   });
 
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [serverError, setServerError] = useState('');
+  const navigate = useNavigate();
 
   const togglePassword = () => setShowPassword(!showPassword);
   const toggleConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
@@ -35,22 +39,55 @@ const Signup = () => {
     if (formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword) {
       temp.confirmPassword = "Passwords do not match";
     }
+    if (!formData.contact) temp.contact = "Contact number is required";
 
     setErrors(temp);
     return Object.keys(temp).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validate()) {
-      alert('Signup successful!');
+    setServerError('');
+    
+    if (!validate()) return;
+    
+    setIsSubmitting(true);
+    
+    try {
+      const response = await fetch('http://localhost:9000/signupuser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          contact: formData.contact
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Signup failed');
+      }
+
+      // Reset form and navigate to login
       setFormData({
         name: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        contact: ''
       });
       setErrors({});
+      navigate('/login');
+      
+    } catch (err) {
+      setServerError(err.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -76,6 +113,7 @@ const Signup = () => {
       <div className="login-card">
         <h2>Create User Account</h2>
         <div className="logo">H</div>
+        {serverError && <div className="server-error">{serverError}</div>}
         <form onSubmit={handleSubmit}>
           <label>Name</label>
           <input
@@ -127,7 +165,19 @@ const Signup = () => {
           </div>
           {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
 
-          <button type="submit">SIGN UP</button>
+          <label>Contact Number</label>
+          <input
+            type="text"
+            name="contact"
+            placeholder="Your contact number"
+            value={formData.contact}
+            onChange={handleChange}
+          />
+          {errors.contact && <span className="error">{errors.contact}</span>}
+
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Signing Up...' : 'SIGN UP'}
+          </button>
         </form>
         <p className="signup-link">
           Already have an account? <Link to="/login">Login</Link>

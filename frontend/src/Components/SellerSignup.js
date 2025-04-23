@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './CSS/Form.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
@@ -12,12 +12,16 @@ const Signup = () => {
     shopName: '',
     address: '',
     category: '',
-    upiId: ''
+    upiId: '',
+    contact: ''
   });
 
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [serverError, setServerError] = useState('');
+  const navigate = useNavigate();
 
   const togglePassword = () => setShowPassword(!showPassword);
   const toggleConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
@@ -25,15 +29,12 @@ const Signup = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear error when user starts typing
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
-    }
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
   };
 
   const validate = () => {
     let temp = {};
-    const requiredFields = ['name', 'email', 'password', 'confirmPassword', 'shopName', 'address', 'category', 'upiId'];
+    const requiredFields = ['name', 'email', 'password', 'confirmPassword', 'shopName', 'address', 'category', 'upiId', 'contact'];
 
     requiredFields.forEach(field => {
       if (!formData[field]?.trim()) {
@@ -57,22 +58,50 @@ const Signup = () => {
     return Object.keys(temp).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validate()) {
-      alert('Signup successful!');
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        shopName: '',
-        address: '',
-        category: '',
-        upiId: ''
+    setServerError('');
+    
+    if (!validate()) return;
+    
+    setIsSubmitting(true);
+    
+    try {
+      const response = await fetch('http://localhost:9000/signupseller', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          shopName: formData.shopName,
+          address: formData.address,
+          category: formData.category,
+          upiId: formData.upiId,
+          contact: formData.contact
+        }),
       });
-      setErrors({});
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Signup failed');
+      }
+
+      // On successful signup
+      navigate('/loginseller', { 
+        state: { 
+          signupSuccess: true,
+          email: formData.email 
+        } 
+      });
+      
+    } catch (err) {
+      setServerError(err.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -110,6 +139,7 @@ const Signup = () => {
       <div className="login-card">
         <h2>Create Seller Account</h2>
         <div className="logo">H</div>
+        {serverError && <div className="server-error">{serverError}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">Name</label><br/>
@@ -206,6 +236,20 @@ const Signup = () => {
           </div>
 
           <div className="form-group">
+            <label htmlFor="contact">Contact Number</label><br/>
+            <input
+              type="text"
+              id="contact"
+              name="contact"
+              placeholder="Your contact number"
+              value={formData.contact}
+              onChange={handleChange}
+              className={errors.contact ? 'error-input' : ''}
+            />
+            {errors.contact && <span className="error">{errors.contact}</span>}
+          </div>
+
+          <div className="form-group">
             <label htmlFor="category">Category</label><br/>
             <input
               type="text"
@@ -233,7 +277,9 @@ const Signup = () => {
             {errors.upiId && <span className="error">{errors.upiId}</span>}
           </div>
 
-          <button type="submit" className="submit-btn">SIGN UP</button>
+          <button type="submit" className="submit-btn" disabled={isSubmitting}>
+            {isSubmitting ? 'Signing Up...' : 'SIGN UP'}
+          </button>
         </form>
         <p className="signup-link">
           Already have an account? <Link to="/loginseller">Login</Link>
