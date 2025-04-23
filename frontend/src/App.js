@@ -5,6 +5,7 @@ import UserLogin from "./Components/UserLogin";
 import UserSignup from "./Components/UserSignup";
 import SellerLogin from "./Components/SellerLogin";
 import SellerSignup from "./Components/SellerSignup";
+import AddProduct from "./Components/AddProduct";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/signup" element={<UserSignup />} />
         <Route path="/loginseller" element={<SellerLogin />} />
         <Route path="/signupseller" element={<SellerSignup />} />
+        <Route path="/addproduct/:sellerName" element={<AddProduct />} />
       </Routes>
     </Router>
   );
