@@ -8,6 +8,8 @@ const sellerRouter = require('./routes/sellerRoutes');
 const productRouter = require('./routes/productRoutes');
 const cartRouter = require('./routes/cartRoutes');
 const orderRouter = require('./routes/orderRoutes');
+const reviewRouter = require('./routes/reviewRoutes');
+const paymentRouter = require('./routes/paymentRoutes');
 
 const app = express();
 const PORT = 9000;
@@ -42,6 +44,8 @@ app.use(sellerRouter);
 app.use(productRouter);
 app.use(cartRouter);
 app.use(orderRouter);
+app.use(reviewRouter);
+app.use(paymentRouter);
 
 app.listen(PORT, () => {
     console.log(`App is listening on port ${PORT}`);
