@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './CSS/AddProduct.css';
 
 const AddProduct = () => {
+  const { sellername } = useParams();
+  console.log("Seller name from URL:", sellername);
   const [formData, setFormData] = useState({
     productName: '',
     category: '',
@@ -31,12 +33,11 @@ const AddProduct = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Validate image file
       if (!file.type.match('image.*')) {
         setErrors(prev => ({ ...prev, image: 'Please select an image file' }));
         return;
       }
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      if (file.size > 5 * 1024 * 1024) {
         setErrors(prev => ({ ...prev, image: 'File size should be less than 5MB' }));
         return;
       }
@@ -44,7 +45,6 @@ const AddProduct = () => {
       setFormData(prev => ({ ...prev, image: file }));
       setErrors(prev => ({ ...prev, image: '' }));
       
-      // Create preview
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImage(reader.result);
@@ -69,32 +69,28 @@ const AddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
-  
+    if (!sellername) {
+      alert("Seller name is missing in the URL");
+      return;
+    }
+
     setIsSubmitting(true);
     setSuccessMessage('');
-  
+
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('productName', formData.productName);
-      formDataToSend.append('category', formData.category);
-      formDataToSend.append('description', formData.description);
-      formDataToSend.append('price', formData.price);
-      formDataToSend.append('sellerName', localStorage.getItem('sellerName'));
-      formDataToSend.append('sellerId', localStorage.getItem('sellerId'));
-      formDataToSend.append('image', formData.image);
-  
-      const response = await fetch('http://localhost:9000/addproduct', {
-        method: 'POST',
-        body: formDataToSend
-      });
-  
-      // First check if response is JSON
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        const text = await response.text();
-        throw new Error(text || 'Server returned non-JSON response');
-      }
-  
+        const formDataToSend = new FormData();
+        formDataToSend.append('productName', formData.productName);
+        formDataToSend.append('category', formData.category);
+        formDataToSend.append('description', formData.description);
+        formDataToSend.append('price', formData.price);
+        formDataToSend.append('image', formData.image);
+
+        // Include seller name in the URL
+        const response = await fetch(`http://localhost:9000/addproduct/${sellername}`, {
+            method: 'POST',
+            body: formDataToSend
+        });
+
       const data = await response.json();
   
       if (!response.ok) {
@@ -105,17 +101,11 @@ const AddProduct = () => {
       
       setTimeout(() => {
         resetForm();
-        navigate('/seller-dashboard');
+        navigate(`/seller-dashboard/${sellername}`);
       }, 1500);
   
     } catch (err) {
-      // Handle different error types
-      if (err.message.includes('<!DOCTYPE html>')) {
-        console.error('Server returned HTML error page');
-        alert('Server error occurred. Please check console for details.');
-      } else {
-        alert(err.message);
-      }
+      alert(err.message);
     } finally {
       setIsSubmitting(false);
     }

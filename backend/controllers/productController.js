@@ -1,30 +1,71 @@
 const ProductData = require('../models/ProductData');
+const Seller = require('../models/SellerData');
+const mongoose = require('mongoose');
 
 const addProduct = async (req, res) => {
     try {
-        const { productName, category, description, price, sellerName } = req.body;
-        const sellerId = req.body.sellerId || req.user?.sellerId; // Adjust based on your auth
+        const { productName, category, description, price } = req.body;
+        const sellerName = req.params.sellername;
+
+        // Validate required fields
+        if (!productName || !category || !description || !price) {
+            return res.status(400).json({
+                success: false,
+                message: "All product fields are required"
+            });
+        }
+
+        if (!sellerName) {
+            return res.status(400).json({
+                success: false,
+                message: "Seller name is required in URL"
+            });
+        }
+
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                message: "Image is required"
+            });
+        }
+
+        // Find seller by name (case insensitive search)
+        const seller = await Seller.findOne({ 
+            name: { $regex: new RegExp(sellerName, 'i') } 
+        });
+        
+        if (!seller) {
+            return res.status(404).json({
+                success: false,
+                message: "Seller not found"
+            });
+        }
+        const normalizedImagePath = req.file.path.replace(/\\/g, '/');
 
         const newProduct = new ProductData({
             productName,
             category,
-            sellerId,
-            sellerName,
+            sellerId: seller._id,
+            sellerName: seller.name,
             description,
             price,
-            imagePath: req.file.path
+            imagePath: normalizedImagePath
         });
+
+        const savedProduct = await newProduct.save();
 
         res.status(201).json({
             success: true,
-            product: newProduct
-          });
-        } catch (err) {
-          res.status(500).json({
+            product: savedProduct,
+            message: "Product added successfully"
+        });
+    } catch (err) {
+        console.error("Error adding product:", err);
+        res.status(500).json({
             success: false,
             message: err.message
-          });
-        }
+        });
+    }
 };
 
 const getProductsBySeller = async (req, res) => {

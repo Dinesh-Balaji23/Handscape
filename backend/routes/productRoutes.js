@@ -18,7 +18,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post('/addproduct', upload.single('image'), addProduct);
+// Remove the optional parameter and make it required
+// Change this in your productRoutes.js
+router.post('/addproduct/:sellername', upload.single('image'), addProduct);
 router.get('/sellerproducts/:sellerName', getProductsBySeller);
 router.put('/updaterating/:productId', updateProductRating);
 
