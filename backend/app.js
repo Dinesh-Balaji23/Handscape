@@ -5,7 +5,9 @@ const path = require('path');
 
 const userRouter = require('./routes/userRoutes');
 const sellerRouter = require('./routes/sellerRoutes');
-const productRouter = require('./routes/productRoutes'); // Add this line
+const productRouter = require('./routes/productRoutes');
+const cartRouter = require('./routes/cartRoutes');
+const orderRouter = require('./routes/orderRoutes');
 
 const app = express();
 const PORT = 9000;
@@ -37,7 +39,9 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(userRouter);
 app.use(sellerRouter);
-app.use(productRouter); // Add this line
+app.use(productRouter);
+app.use(cartRouter);
+app.use(orderRouter);
 
 app.listen(PORT, () => {
     console.log(`App is listening on port ${PORT}`);
