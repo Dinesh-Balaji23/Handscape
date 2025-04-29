@@ -43,7 +43,7 @@ const paymentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
-}, { timestamps: true });
+}, { collection: 'PaymentData', timestamps: true });
 
 // Update order status when payment succeeds
 paymentSchema.post('save', async function(doc) {

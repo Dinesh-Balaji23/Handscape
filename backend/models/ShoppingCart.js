@@ -32,7 +32,7 @@ const shoppingCartSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
-});
+}, { collection: 'ShoppingCart' });
 
 // Auto-calculate total before saving
 shoppingCartSchema.pre('save', async function(next) {

@@ -52,6 +52,6 @@ const orderSchema = new mongoose.Schema({
     required: true
   },
   paymentId: String // Reference to Payments collection
-}, { timestamps: true });
+}, { collection: 'OrderData', timestamps: true });
 
 module.exports = mongoose.model('OrderData', orderSchema);

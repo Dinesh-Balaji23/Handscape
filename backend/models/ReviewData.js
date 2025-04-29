@@ -32,7 +32,7 @@ const reviewSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
-});
+}, { collection: 'ReviewData'});
 
 // Update product rating stats when new review is added
 reviewSchema.post('save', async function() {
