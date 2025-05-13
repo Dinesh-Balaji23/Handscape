@@ -7,7 +7,6 @@ const addProduct = async (req, res) => {
         const { productName, category, description, price } = req.body;
         const sellerName = req.params.sellername;
 
-        // Validate required fields
         if (!productName || !category || !description || !price) {
             return res.status(400).json({
                 success: false,
@@ -29,7 +28,6 @@ const addProduct = async (req, res) => {
             });
         }
 
-        // Find seller by name (case insensitive search)
         const seller = await Seller.findOne({ 
             name: { $regex: new RegExp(sellerName, 'i') } 
         });
@@ -40,6 +38,7 @@ const addProduct = async (req, res) => {
                 message: "Seller not found"
             });
         }
+
         const normalizedImagePath = req.file.path.replace(/\\/g, '/');
 
         const newProduct = new ProductData({
@@ -68,6 +67,16 @@ const addProduct = async (req, res) => {
     }
 };
 
+// Get all products
+const getAllProducts = async (req, res) => {
+    try {
+        const products = await ProductData.find();
+        res.status(200).json(products);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
 const getProductsBySeller = async (req, res) => {
     try {
         const products = await ProductData.find({ sellerName: req.params.sellerName });
@@ -80,30 +89,46 @@ const getProductsBySeller = async (req, res) => {
 const updateProductRating = async (req, res) => {
     try {
         const productId = req.params.productId;
-        
-        // Calculate new average rating
+
         const reviews = await ReviewData.find({ productId });
         const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
         const avgRating = reviews.length > 0 ? totalRating / reviews.length : 0;
-        
-        // Update product
+
         const updatedProduct = await ProductData.findByIdAndUpdate(
             productId,
             { 
                 avgRating: parseFloat(avgRating.toFixed(1)),
-                reviewCount: reviews.length 
+                reviewCount: reviews.length
             },
             { new: true }
         );
-        
+
         res.status(200).json(updatedProduct);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
 
+const getProductById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await ProductData.findById(id);
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        res.status(200).json(product);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+
 module.exports = {
     addProduct,
+    getAllProducts,
     getProductsBySeller,
-    updateProductRating
+    updateProductRating,
+    getProductById
 };

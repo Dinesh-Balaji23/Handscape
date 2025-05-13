@@ -6,6 +6,10 @@ import UserSignup from "./Components/UserSignup";
 import SellerLogin from "./Components/SellerLogin";
 import SellerSignup from "./Components/SellerSignup";
 import AddProduct from "./Components/AddProduct";
+import UserDashboard from "./Components/UserDashboard";
+import ProductList from "./Components/ProductList";
+import ViewProduct from "./Components/ViewProduct";
+import Cart from "./Components/Cart";
 
 const App = () => {
   return (
@@ -17,6 +21,10 @@ const App = () => {
         <Route path="/loginseller" element={<SellerLogin />} />
         <Route path="/signupseller" element={<SellerSignup />} />
         <Route path="/addproduct/:sellername" element={<AddProduct />} />
+        <Route path="/user-dashboard/:username" element={<UserDashboard />} />
+        <Route path="/products/:username" element={<ProductList />} />
+        <Route path="/viewprod/:username/:id" element={<ViewProduct />} />
+        <Route path="/cart/:username" element={<Cart />} />
       </Routes>
     </Router>
   );

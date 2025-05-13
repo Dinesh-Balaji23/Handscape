@@ -45,9 +45,9 @@ const Login = () => {
         throw new Error(data.message || 'Login failed');
       }
 
-      // Store user data and redirect
       localStorage.setItem('user', JSON.stringify(data.user));
-      navigate('/');
+      const username = data.user.name || data.user.username || 'user';
+      navigate(`/user-dashboard/${username}`);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -113,7 +113,6 @@ const Login = () => {
             {loading ? 'Logging in...' : 'LOGIN'}
           </button>
         </form>
-        
         <p className="signup-link">
           Don't have an account? <Link to="/signup">Sign Up</Link>
         </p>

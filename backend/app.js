@@ -8,8 +8,6 @@ const sellerRouter = require('./routes/sellerRoutes');
 const productRouter = require('./routes/productRoutes');
 const cartRouter = require('./routes/cartRoutes');
 const orderRouter = require('./routes/orderRoutes');
-const reviewRouter = require('./routes/reviewRoutes');
-const paymentRouter = require('./routes/paymentRoutes');
 
 const app = express();
 const PORT = 9000;
@@ -28,7 +26,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/Handscape')
         console.error('Error connecting to MongoDB:', err.message);
     });
 
-// Create uploads directory if it doesn't exist
 const fs = require('fs');
 const uploadDir = 'uploads';
 if (!fs.existsSync(uploadDir)) {
@@ -44,8 +41,6 @@ app.use(sellerRouter);
 app.use(productRouter);
 app.use(cartRouter);
 app.use(orderRouter);
-app.use(reviewRouter);
-app.use(paymentRouter);
 
 app.listen(PORT, () => {
     console.log(`App is listening on port ${PORT}`);

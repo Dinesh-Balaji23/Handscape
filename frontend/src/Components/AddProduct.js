@@ -199,13 +199,6 @@ const AddProduct = () => {
                 {previewImage ? (
                   <>
                     <img src={previewImage} alt="Preview" className="image-preview" />
-                    <button 
-                      type="button" 
-                      className="change-image-btn"
-                      onClick={() => fileInputRef.current.click()}
-                    >
-                      Change Image
-                    </button>
                   </>
                 ) : (
                   <div className="upload-placeholder">

@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { 
     addProduct,
+    getAllProducts,
     getProductsBySeller,
-    updateProductRating
+    updateProductRating,
+    getProductById
 } = require('../controllers/productController');
 const multer = require('multer');
 
@@ -18,9 +20,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Remove the optional parameter and make it required
-// Change this in your productRoutes.js
 router.post('/addproduct/:sellername', upload.single('image'), addProduct);
+router.get('/products', getAllProducts);
+router.get('/products/:id', getProductById);
 router.get('/sellerproducts/:sellerName', getProductsBySeller);
 router.put('/updaterating/:productId', updateProductRating);
 
