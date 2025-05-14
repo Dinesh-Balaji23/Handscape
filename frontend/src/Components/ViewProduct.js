@@ -68,42 +68,72 @@ const ViewProduct = () => {
               <Link to={`/orders/${username}`} className="nav-link">Orders</Link>
             </li>
             <li className="nav-item">
-              <Link to="/login" className="nav-link">Logout</Link>
+              <Link to="/login" className="nav-link">Logout ({username})</Link>
             </li>
           </ul>
         </div>
       </nav>
 
-      <div style={{ height: '100px' }}></div>
-
-      <div className="product-details">
+      <div className="product-details-container">
+      <div className="product-image-container">
         <img
           src={`http://localhost:9000/${product.imagePath}`}
           alt={product.productName}
-          className="product-detail-image"
+          className="product-image"
+          onError={(e) => {
+            e.target.src = 'https://via.placeholder.com/500x500?text=Product+Image';
+          }}
         />
-        <div className="product-info">
-          <h2>{product.productName}</h2>
-          <p className="price">₹{product.price}</p>
-          <button 
-            className="add-to-cart-button" 
-            onClick={handleAddToCart} 
-            disabled={addingToCart}
-          >
-            {addingToCart ? 'Adding...' : 'Add to Cart'}
-          </button>
-          <p className="desc">{product.description}</p>
-          <p className="category"><strong>Category:</strong> {product.category || 'Not specified'}</p>
-          <div className="rating-section">
-            <span className="stars">
-              {'★'.repeat(Math.round(product.avgRating))}{'☆'.repeat(5 - Math.round(product.avgRating))}
-            </span>
-            <span className="review-count">({product.reviewCount} reviews)</span>
+      </div>
+      
+      <div className="product-info-card">
+        <h1 className="product-title">{product.productName}</h1>
+        
+        <div className="price-section">
+          <span className="current-price">₹{product.price.toFixed(2)}</span>
+        </div>
+        
+        <div className="rating-section">
+          <div className="stars">
+            {Array(5).fill().map((_, i) => (
+              <span key={i} className={i < Math.round(product.avgRating) ? 'star-filled' : 'star-empty'}>
+                {i < Math.round(product.avgRating) ? '★' : '☆'}
+              </span>
+            ))}
+          </div>
+          <span className="review-count">({product.reviewCount} reviews)</span>
+        </div>
+        
+        <div className="product-meta">
+          <div className="meta-item">
+            <span className="meta-label">Category:</span>
+            <span className="meta-value">{product.category || 'Not specified'}</span>
+          </div>
+          <div className="meta-item">
+            <span className="meta-label">Sold by:</span>
+            <span className="meta-value">{product.sellerName}</span>
           </div>
         </div>
+        
+        <p className="product-description">{product.description}</p>
+        
+        <button 
+          className="add-to-cart-btn"
+          onClick={handleAddToCart}
+          disabled={addingToCart}
+        >
+          {addingToCart ? (
+            <>
+              <span className="spinner"></span> Adding...
+            </>
+          ) : (
+            'Add to Cart'
+          )}
+        </button>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default ViewProduct;

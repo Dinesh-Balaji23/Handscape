@@ -48,7 +48,7 @@ const ProductList = () => {
               <Link to={`/orders/${username}`} className="nav-link">Orders</Link>
             </li>
             <li className="nav-item">
-              <Link to="/login" className="nav-link">Logout</Link>
+              <Link to="/login" className="nav-link">Logout ({username})</Link>
             </li>
           </ul>
         </div>
@@ -72,10 +72,6 @@ const ProductList = () => {
               <p className="product-description">{product.description}</p>
               <div className="product-price">Rs. {product.price}</div>
               <div className="product-rating">
-                <span className="stars">
-                  {'★'.repeat(Math.round(product.avgRating))}
-                  {'☆'.repeat(5 - Math.round(product.avgRating))}
-                </span>
                 <span className="review-count">({product.reviewCount} reviews)</span>
               </div>
               <Link to={`/viewprod/${username}/${product._id}`} className="btn btn-primary">
