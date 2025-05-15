@@ -51,7 +51,8 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  paymentId: String // Reference to Payments collection
+  paymentId: String, // Reference to Payments collection
+  razorpayOrderId: String // Store Razorpay order ID
 }, { collection: 'OrderData', timestamps: true });
 
 module.exports = mongoose.model('OrderData', orderSchema);

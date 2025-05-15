@@ -10,6 +10,8 @@ import UserDashboard from "./Components/UserDashboard";
 import ProductList from "./Components/ProductList";
 import ViewProduct from "./Components/ViewProduct";
 import Cart from "./Components/Cart";
+import UserOrder from "./Components/UserOrder";
+import SellerDashboard from "./Components/SellerDashboard";
 
 const App = () => {
   return (
@@ -25,6 +27,8 @@ const App = () => {
         <Route path="/products/:username" element={<ProductList />} />
         <Route path="/viewprod/:username/:id" element={<ViewProduct />} />
         <Route path="/cart/:username" element={<Cart />} />
+        <Route path="/orders/:username" element={<UserOrder />} />
+        <Route path="/seller-dashboard/:sellername" element={<SellerDashboard />} />
       </Routes>
     </Router>
   );

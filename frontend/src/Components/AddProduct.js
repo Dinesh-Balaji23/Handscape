@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import './CSS/AddProduct.css';
 
 const AddProduct = () => {
@@ -123,6 +123,21 @@ const AddProduct = () => {
   };
 
   return (
+    <>
+     <nav className="navbar navbar-expand-lg navbar-dark" style={{ backgroundColor: 'black' }}>
+        <div className="container-fluid">
+          <a className="navbar-brand" href={`/seller-dashboard/${sellername}`} style={{ color: 'orange', fontWeight: 'bold' }}>
+            Handscape (Seller)
+          </a>
+          <ul className="navbar-nav ms-auto">
+            <li className="nav-item"><Link to={`/seller-dashboard/${sellername}`} className="nav-link active">Home</Link></li>
+            <li className="nav-item"><Link to={`/addproduct/${sellername}`} className="nav-link">Add Product</Link></li>
+            <li className="nav-item"><Link to={`/seller-orders/${sellername}`} className="nav-link">Orders</Link></li>
+            <li className="nav-item"><Link to="/login" className="nav-link">Logout ({sellername})</Link></li>
+          </ul>
+        </div>
+      </nav>
+
     <div className="form-page">
       <div className="form-card">
         <h2>Add New Book</h2>
@@ -223,6 +238,7 @@ const AddProduct = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 

@@ -60,18 +60,19 @@ const Login = () => {
           password: formData.password
         }),
       });
-
+  
       const data = await response.json();
-
+  
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
       }
-
+  
       // Store seller data in localStorage
       localStorage.setItem('seller', JSON.stringify(data.seller));
       
-      // Redirect to seller dashboard or home page
-      navigate('/seller-dashboard');
+      // Extract seller name and navigate to dashboard
+      const sellerName = data.seller.name; // Assuming the response contains seller.name
+      navigate(`/seller-dashboard/${sellerName}`);
       
     } catch (err) {
       setServerError(err.message);
