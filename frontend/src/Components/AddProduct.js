@@ -141,13 +141,11 @@ const AddProduct = () => {
     <div className="form-page">
       <div className="form-card">
         <h2>Add New Book</h2>
-        
         {successMessage && (
           <div className="success-message">
             {successMessage}
           </div>
         )}
-        
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Product Name</label>
