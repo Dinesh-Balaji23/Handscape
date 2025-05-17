@@ -55,6 +55,9 @@
     width: 100%;
     height: auto;
     border-radius: 8px;
+    min-height: 100px;
+    min-width: 100px;
+    object-fit: cover;
 }
 
 .product-name {

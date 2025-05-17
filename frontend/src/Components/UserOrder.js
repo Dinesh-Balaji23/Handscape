@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
-import './CSS/Cart.css'; // Reusing your Cart styles
+import './CSS/Cart.css';
 
 const UserOrder = () => {
     const { username } = useParams();
@@ -86,7 +86,7 @@ const UserOrder = () => {
             {orders.map((order) => (
               <div 
                 key={order._id} 
-                className={`order-card ${order.status === 'Cancelled' ? 'cancelled' : ''}`}
+                className={`order-card ${order.status.toLowerCase()}`}
               >
                 <div className="order-header">
                   <span className="order-id">Order #{order._id.slice(-6).toUpperCase()}</span>

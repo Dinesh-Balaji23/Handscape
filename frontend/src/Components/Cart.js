@@ -170,11 +170,6 @@ const Cart = () => {
               {cartItems.map((item) => (
                 <div className="cart-row" key={item.productId._id}>
                   <div className="cart-cell product-info">
-                    <img
-                      src={`http://localhost:9000/${item.productId.imagePath}`}
-                      alt={item.productId.productName}
-                      className="product-image"
-                    />
                     <span className="product-name">{item.productId.productName}</span>
                   </div>
                   <div className="cart-cell">₹{item.productId.price.toFixed(2)}</div>

@@ -4,7 +4,7 @@ import axios from 'axios';
 import './CSS/ProductList.css';
 
 const ProductList = () => {
-  const { username } = useParams(); // 🔥 Get username from URL
+  const { username } = useParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -63,11 +63,11 @@ const ProductList = () => {
         {products.length > 0 ? (
           products.map((product) => (
             <div key={product._id} className="product-card">
-              <img
+              <center><img
                 src={`http://localhost:9000/${product.imagePath}`}
                 alt={product.productName}
                 className="product-image"
-              />
+              /></center>
               <h3 className="product-name">{product.productName}</h3>
               <p className="product-description">{product.description}</p>
               <div className="product-price">Rs. {product.price}</div>

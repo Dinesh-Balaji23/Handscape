@@ -9,8 +9,14 @@
 }
 
 /* Navbar Hover Effect */
-.navbar-nav .nav-link:hover {
+.navbar-nav .nav-link:hover, .navbar-link:hover {
     color: #ff6600; /* Orange on hover */
+}
+
+.navbar-link {
+    font-weight: 600;
+    color: black;
+    transition: color 0.3s ease-in-out;
 }
 
 body {

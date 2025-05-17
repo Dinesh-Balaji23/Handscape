@@ -11,26 +11,37 @@
 }
 
 /* Product Image Container */
+/* Product Image Container */
+/* Product Image Container */
 .product-image-container {
   flex: 1;
-  min-width: 50%; /* Takes at least half the container width */
+  min-width: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #f9f9f9;
   border-radius: 10px;
   padding: 20px;
-  height: 500px; /* Fixed height for consistency */
+  height: 500px;
 }
 
 .product-image {
   max-width: 100%;
-  max-height: 100%; /* Will fill the container height */
+  max-height: 100%;
   width: auto;
   height: auto;
-  object-fit: contain; /* Ensures full image is visible */
+  object-fit: contain;
   border-radius: 8px;
   transition: transform 0.3s ease;
+  min-height: 250px;
+  min-width: 250px;
+}
+
+/* Make the image container take more space on larger screens */
+@media (min-width: 992px) {
+  .product-image-container {
+    flex: 1.5; /* Takes more space than the info card */
+  }
 }
 
 /* Hover effect for better UX */

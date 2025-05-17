@@ -189,11 +189,30 @@ const getSellerAnalytics = async (req, res) => {
   }
 };
 
+const getSellerOrdersByName = async (req, res) => {
+  try {
+    const { sellername } = req.params;
+    console.log(`Fetching orders for seller: ${sellername}`);
+    
+    const orders = await OrderData.find({ sellerName: sellername })
+      .sort({ bookingDate: -1 }); // Sort by newest first
+    
+    res.status(200).json(orders);
+  } catch (err) {
+    console.error('Error in getSellerOrdersByName:', err);
+    res.status(500).json({ 
+      error: 'Failed to fetch seller orders',
+      details: err.message 
+    });
+  }
+};
+
   module.exports = {
     createOrder,
     getUserOrders,
     getSellerOrders,
     updateOrderStatus,
     createRazorpayOrder,
-    getSellerAnalytics
+    getSellerAnalytics,
+    getSellerOrdersByName
   };

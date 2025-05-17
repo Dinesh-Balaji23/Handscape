@@ -157,7 +157,7 @@ const LandingPage = () => {
             {/* Dropdown for Login/Signup */}
             <li className="nav-item dropdown">
               <a
-                className="nav-link dropdown-toggle"
+                className="navbar-link dropdown-toggle"
                 href="#"
                 id="navbarDropdown"
                 role="button"

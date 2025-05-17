@@ -6,11 +6,13 @@ const {
   getSellerOrders,
   updateOrderStatus,
   createRazorpayOrder,
-  getSellerAnalytics
+  getSellerAnalytics,
+  getSellerOrdersByName
 } = require('../controllers/orderController');
 
 router.post('/orders', createOrder);
-router.get('/user-orders/:username', getUserOrders); // Changed to this exact format
+router.get('/user-orders/:username', getUserOrders);
+router.get('/orders/seller-orders/:sellername', getSellerOrdersByName);
 router.get('/seller', getSellerOrders);
 router.route('/orders/status')
   .patch(updateOrderStatus)
