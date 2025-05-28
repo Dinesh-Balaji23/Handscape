@@ -17,9 +17,3 @@
 - **Frontend:** HTML, CSS, Bootstrap 5
 - **Icons:** FontAwesome
 - **JavaScript:** Carousel, smooth scrolling, and testimonial rotation
-
-## Setup Instructions
-1. Clone this repository:
-   ```sh
-   git clone https://github.com/your-username/craftique.git
-## <p align="center">THIS IS JUST THE BEGINNING... THERE IS MORE TO DO...</p>
