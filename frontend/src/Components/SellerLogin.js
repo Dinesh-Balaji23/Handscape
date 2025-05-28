@@ -13,7 +13,7 @@ const Login = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [serverError, setServerError] = useState('');
   const navigate = useNavigate();
-  const location = useLocation(); // Proper way to access location
+  const location = useLocation();
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -25,7 +25,6 @@ const Login = () => {
       ...prev,
       [name]: value
     }));
-    // Clear error when user types
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -36,7 +35,7 @@ const Login = () => {
     if (!formData.email.trim()) temp.email = "Email is required";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) temp.email = "Invalid email format";
     if (!formData.password) temp.password = "Password is required";
-    
+
     setErrors(temp);
     return Object.keys(temp).length === 0;
   };
@@ -44,36 +43,31 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setServerError('');
-    
+
     if (!validate()) return;
-    
+
     setIsSubmitting(true);
-    
+
     try {
       const response = await fetch('http://localhost:9000/loginseller', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: formData.email,
           password: formData.password
         }),
       });
-  
+
       const data = await response.json();
-  
+
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
       }
-  
-      // Store seller data in localStorage
+
       localStorage.setItem('seller', JSON.stringify(data.seller));
-      
-      // Extract seller name and navigate to dashboard
-      const sellerName = data.seller.name; // Assuming the response contains seller.name
+      const sellerName = data.seller.name;
       navigate(`/seller-dashboard/${sellerName}`);
-      
+
     } catch (err) {
       setServerError(err.message);
     } finally {
@@ -97,14 +91,12 @@ const Login = () => {
       page.appendChild(particle);
     }
 
-    // Cleanup particles when component unmounts
     return () => {
       const particles = document.querySelectorAll('.particle');
       particles.forEach(particle => particle.remove());
     };
   }, []);
 
-  // Check for success message from signup redirect
   useEffect(() => {
     if (location.state?.signupSuccess) {
       setFormData(prev => ({ ...prev, email: location.state.email }));
@@ -116,9 +108,9 @@ const Login = () => {
       <div className="login-card">
         <h2>Welcome Seller</h2>
         <div className="logo">H</div>
-        
+
         {serverError && <div className="server-error">{serverError}</div>}
-        
+
         <form onSubmit={handleSubmit}>
           <label>Email</label>
           <input
@@ -151,7 +143,7 @@ const Login = () => {
             {isSubmitting ? 'Logging in...' : 'LOGIN'}
           </button>
         </form>
-        
+
         <p className="signup-link">
           Don't have an account? <Link to="/signupseller">Sign Up</Link>
         </p>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import "./CSS/LandingPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,7 +11,6 @@ import {
   faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 
-// Import all images
 import home1 from "./Images/Home1.jpg";
 import home2 from "./Images/Home2.jpg";
 import aboutImage from "./Images/AboutImage.jpg";
@@ -28,7 +27,6 @@ import services3 from "./Images/Services3.jpeg";
 const LandingPage = () => {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const navigate = useNavigate();
-  // Testimonials data
   const testimonials = [
     {
       text: "Handscape is amazing! The handmade products are so unique, and the quality is top-notch.",
@@ -45,43 +43,38 @@ const LandingPage = () => {
   ];
 
   useEffect(() => {
-    // Auto-rotate testimonials
     const interval = setInterval(() => {
       setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
     }, 3000);
-
-    // Cleanup interval
     return () => clearInterval(interval);
   }, [testimonials.length]);
 
-  // Smooth scrolling for navbar links
   useEffect(() => {
-    const navbarLinks = document.querySelectorAll('a.nav-link');
-    navbarLinks.forEach((anchor) => {
-      anchor.addEventListener("click", function (e) {
-        e.preventDefault();
-        const targetId = this.getAttribute("href").substring(1);
-        const targetSection = document.getElementById(targetId);
-        if (targetSection) {
-          smoothScrollTo(targetSection, 1000); // 1000ms = 1 second duration
-        }
-      });
-    });
-
-    // Cleanup event listeners
+    const navbarLinks = document.querySelectorAll("a.nav-link");
+    const handleClick = (e) => {
+      e.preventDefault();
+      const targetId = e.currentTarget.getAttribute("href").substring(1);
+      const targetSection = document.getElementById(targetId);
+      if (targetSection) smoothScrollTo(targetSection, 1000);
+    };
+    navbarLinks.forEach((anchor) => anchor.addEventListener("click", handleClick));
     return () => {
-      navbarLinks.forEach((anchor) => {
-        anchor.removeEventListener("click", () => {});
-      });
+      navbarLinks.forEach((anchor) => anchor.removeEventListener("click", handleClick));
     };
   }, []);
 
-  // Custom smooth scroll function
   const smoothScrollTo = (target, duration) => {
     const startPosition = window.pageYOffset;
-    const targetPosition = target.offsetTop - 70; // Adjust for navbar height
+    const targetPosition = target.offsetTop - 70;
     const distance = targetPosition - startPosition;
     let startTime = null;
+
+    const easeInOutQuad = (t, b, c, d) => {
+      t /= d / 2;
+      if (t < 1) return (c / 2) * t * t + b;
+      t--;
+      return (-c / 2) * (t * (t - 2) - 1) + b;
+    };
 
     const animation = (currentTime) => {
       if (startTime === null) startTime = currentTime;
@@ -91,108 +84,93 @@ const LandingPage = () => {
       if (timeElapsed < duration) requestAnimationFrame(animation);
     };
 
-    // Easing function for smooth acceleration and deceleration
-    const easeInOutQuad = (t, b, c, d) => {
-      t /= d / 2;
-      if (t < 1) return (c / 2) * t * t + b;
-      t--;
-      return (-c / 2) * (t * (t - 2) - 1) + b;
-    };
-
     requestAnimationFrame(animation);
   };
-  
+
   const handleNavigation = (role) => {
-    // Navigate to the respective login page
-    if (role === "user") {
-      window.location.href = "/login"; // Replace with the actual path
-    } else if (role === "seller") {
-      window.location.href = "/loginseller"; // Replace with the actual path
-    }
+    if (role === "user") window.location.href = "/login";
+    else if (role === "seller") window.location.href = "/loginseller";
   };
 
   return (
     <div>
-      {/* Navbar */}
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div className="container">
-        <a className="navbar-brand fw-bold" href="/">
-          Handscape
-        </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <a className="nav-link active" href="#heroCarousel">
-                Home
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#about">
-                About Us
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#gallery">
-                Gallery
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#services">
-                Services
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#testimonials">
-                Testimonials
-              </a>
-            </li>
-            {/* Dropdown for Login/Signup */}
-            <li className="nav-item dropdown">
-              <a
-                className="navbar-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <FontAwesomeIcon icon={faUser} /> Login/Signup
-              </a>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li>
-                  <a
-                    className="dropdown-item"
-                    href="#"
-                    onClick={() => handleNavigation("user")}
-                  >
-                    <FontAwesomeIcon icon={faUser} /> User
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="dropdown-item"
-                    href="#"
-                    onClick={() => handleNavigation("seller")}
-                  >
-                    <FontAwesomeIcon icon={faStore} /> Seller
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
+        <div className="container">
+          <a className="navbar-brand fw-bold" href="/">
+            Handscape
+          </a>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item">
+                <a className="nav-link active" href="#heroCarousel">
+                  Home
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#about">
+                  About Us
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#gallery">
+                  Gallery
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#services">
+                  Services
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#testimonials">
+                  Testimonials
+                </a>
+              </li>
+              <li className="nav-item dropdown">
+                <a
+                  className="navbar-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <FontAwesomeIcon icon={faUser} /> Login/Signup
+                </a>
+                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li>
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={() => handleNavigation("user")}
+                    >
+                      <FontAwesomeIcon icon={faUser} /> User
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={() => handleNavigation("seller")}
+                    >
+                      <FontAwesomeIcon icon={faStore} /> Seller
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
 
-      {/* Hero Section (Carousel) */}
       <div
         id="heroCarousel"
         className="carousel slide"
@@ -227,7 +205,6 @@ const LandingPage = () => {
         </div>
       </div>
 
-      {/* About Section */}
       <section id="about" className="about-section">
         <div className="container">
           <div className="row align-items-center">
@@ -256,7 +233,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Gallery Section */}
       <section id="gallery" className="gallery-section">
         <div className="container">
           <h2 className="gallery-title">OUR GALLERY</h2>
@@ -265,47 +241,20 @@ const LandingPage = () => {
             expression of creativity and skill, crafted with passion.
           </p>
           <div className="gallery-grid">
-            <div className="gallery-item">
-              <img src={gallery1} alt="Handmade Decor" />
-              <div className="overlay">
-                <FontAwesomeIcon icon={faSearch} />
-              </div>
-            </div>
-            <div className="gallery-item">
-              <img src={gallery2} alt="Handcrafted Pottery" />
-              <div className="overlay">
-                <FontAwesomeIcon icon={faSearch} />
-              </div>
-            </div>
-            <div className="gallery-item">
-              <img src={gallery3} alt="Wooden Art" />
-              <div className="overlay">
-                <FontAwesomeIcon icon={faSearch} />
-              </div>
-            </div>
-            <div className="gallery-item">
-              <img src={gallery4} alt="Handwoven Textiles" />
-              <div className="overlay">
-                <FontAwesomeIcon icon={faSearch} />
-              </div>
-            </div>
-            <div className="gallery-item">
-              <img src={gallery5} alt="Jewelry Art" />
-              <div className="overlay">
-                <FontAwesomeIcon icon={faSearch} />
-              </div>
-            </div>
-            <div className="gallery-item">
-              <img src={gallery6} alt="Handmade Candles" />
-              <div className="overlay">
-                <FontAwesomeIcon icon={faSearch} />
-              </div>
-            </div>
+            {[gallery1, gallery2, gallery3, gallery4, gallery5, gallery6].map(
+              (img, idx) => (
+                <div className="gallery-item" key={idx}>
+                  <img src={img} alt={`Gallery ${idx + 1}`} />
+                  <div className="overlay">
+                    <FontAwesomeIcon icon={faSearch} />
+                  </div>
+                </div>
+              )
+            )}
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
       <section id="services" className="services">
         <div className="services-container">
           <h2 className="services-title">Why Choose Handscape?</h2>
@@ -313,46 +262,43 @@ const LandingPage = () => {
             The ultimate marketplace for unique handcrafted goods.
           </p>
           <div className="services-list">
-            <div className="service-box">
-              <div className="service-img">
-                <img src={services1} alt="Wide Selection" />
+            {[
+              {
+                img: services1,
+                title: "Wide Selection",
+                desc: "Thousands of unique handcrafted items from talented artisans.",
+              },
+              {
+                img: services2,
+                title: "Secure Payments",
+                desc: "Buy with confidence using our secure checkout process.",
+              },
+              {
+                img: services3,
+                title: "Faster Orders",
+                desc: "Faster delivery with economical delivery charges.",
+              },
+            ].map((service, idx) => (
+              <div className="service-box" key={idx}>
+                <div className="service-img">
+                  <img src={service.img} alt={service.title} />
+                </div>
+                <h3>{service.title}</h3>
+                <p>{service.desc}</p>
               </div>
-              <h3>Wide Selection</h3>
-              <p>
-                Thousands of unique handcrafted items from talented artisans.
-              </p>
-            </div>
-            <div className="service-box">
-              <div className="service-img">
-                <img src={services2} alt="Secure Payments" />
-              </div>
-              <h3>Secure Payments</h3>
-              <p>Buy with confidence using our secure checkout process.</p>
-            </div>
-            <div className="service-box">
-              <div className="service-img">
-                <img src={services3} alt="Custom Orders" />
-              </div>
-              <h3>Faster Orders</h3>
-              <p>Faster delivery with economical delivery charges.</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
       <section id="testimonials" className="testimonials">
         <h2 className="testimonials-title">What Our Customers Say</h2>
-        <p className="testimonials-subtitle">
-          Real experiences from our happy buyers.
-        </p>
+        <p className="testimonials-subtitle">Real experiences from our happy buyers.</p>
         <div className="testimonial-container">
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className={`testimonial-box ${
-                index === activeTestimonial ? "active" : ""
-              }`}
+              className={`testimonial-box ${index === activeTestimonial ? "active" : ""}`}
             >
               <div className="testimonial-content">
                 <p className="testimonial-text">{testimonial.text}</p>
@@ -372,7 +318,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="footer">
         <div className="footer-container">
           <div className="footer-column">

@@ -19,7 +19,6 @@ const ProductList = () => {
         setLoading(false);
       }
     };
-
     fetchProducts();
   }, []);
 
@@ -31,7 +30,11 @@ const ProductList = () => {
     <div className="product-list-container">
       <nav className="navbar navbar-expand-lg navbar-dark" style={{ backgroundColor: 'black' }}>
         <div className="container">
-          <a className="navbar-brand" href={`/user-dashboard/${username}`} style={{ color: 'orange', fontWeight: 'bold' }}>
+          <a
+            className="navbar-brand"
+            href={`/user-dashboard/${username}`}
+            style={{ color: 'orange', fontWeight: 'bold' }}
+          >
             Handscape
           </a>
           <ul className="navbar-nav ms-auto">
@@ -63,11 +66,13 @@ const ProductList = () => {
         {products.length > 0 ? (
           products.map((product) => (
             <div key={product._id} className="product-card">
-              <center><img
-                src={`http://localhost:9000/${product.imagePath}`}
-                alt={product.productName}
-                className="product-image"
-              /></center>
+              <center>
+                <img
+                  src={`http://localhost:9000/${product.imagePath}`}
+                  alt={product.productName}
+                  className="product-image"
+                />
+              </center>
               <h3 className="product-name">{product.productName}</h3>
               <p className="product-description">{product.description}</p>
               <div className="product-price">Rs. {product.price}</div>

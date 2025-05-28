@@ -1,16 +1,13 @@
-/* Importing Poppins Font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
-/* Navbar Links */
 .navbar-nav .nav-link {
     font-weight: 600;
     color: #fff;
     transition: color 0.3s ease-in-out;
 }
 
-/* Navbar Hover Effect */
 .navbar-nav .nav-link:hover, .navbar-link:hover {
-    color: #ff6600; /* Orange on hover */
+    color: #ff6600;
 }
 
 .navbar-link {
@@ -23,14 +20,12 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-/* Fullscreen Carousel */
 .carousel,
 .carousel-inner,
 .carousel-item {
     height: 100vh;
 }
 
-/* Dark overlay to improve contrast */
 .carousel-item::before {
     content: "";
     position: absolute;
@@ -38,18 +33,16 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.4); /* Dark overlay */
+    background: rgba(0, 0, 0, 0.4);
     z-index: 1;
 }
 
-/* Images */
 .carousel-item img {
     width: 100%;
     height: 100vh;
     object-fit: cover;
 }
 
-/* Positioning the caption */
 .carousel-caption {
     position: absolute;
     top: 50%;
@@ -59,7 +52,6 @@ body {
     z-index: 2;
 }
 
-/* Heading */
 .carousel-caption h1 {
     font-size: 3rem;
     font-weight: 700;
@@ -67,12 +59,10 @@ body {
     animation: slideInLeft 1.2s ease-in-out;
 }
 
-/* Highlighted text */
 .carousel-caption span {
     color: #ff9100;
 }
 
-/* Paragraph */
 .carousel-caption p {
     font-size: 1.2rem;
     color: #fff;
@@ -81,7 +71,6 @@ body {
     animation: fadeIn 1.5s ease-in-out;
 }
 
-/* Button */
 .carousel-caption .btn {
     margin-top: 15px;
     opacity: 0;
@@ -91,12 +80,10 @@ body {
     animation: fadeIn 1.8s ease-in-out forwards;
 }
 
-/* Fixing smooth transitions */
 .carousel-item {
     transition: opacity 1s ease-in-out;
 }
 
-/* Animations */
 @keyframes slideInLeft {
     from {
         opacity: 0;
@@ -117,13 +104,11 @@ body {
     }
 }
 
-/* About Section */
 .about-section {
     padding: 60px 0;
     background: #fff;
 }
 
-/* Title */
 .about-title {
     font-weight: 700;
     font-size: 30px;
@@ -132,21 +117,18 @@ body {
     letter-spacing: 1px;
 }
 
-/* Paragraph */
 .about-section p {
     font-size: 16px;
     color: #444;
     line-height: 1.6;
 }
 
-/* Image Container */
 .image-container {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Image */
 .about-image {
     width: 80%;
     max-width: 400px;
@@ -155,19 +137,16 @@ body {
     transition: transform 0.3s ease-in-out;
 }
 
-/* Image Hover */
 .about-image:hover {
     transform: scale(1.03);
 }
 
-/* Button */
 .btn-dark {
     font-weight: 600;
     padding: 10px 20px;
     transition: background 0.3s ease-in-out;
 }
 
-/* Button Hover */
 .btn-dark:hover {
     background: #ff6600;
     border-color: #ff6600;
@@ -245,7 +224,6 @@ body {
     z-index: 1;
 }
 
-/* Add a dark overlay to dim the background */
 .services::before {
     content: "";
     position: absolute;
@@ -253,7 +231,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Adjust darkness (0.5 = 50%) */
+    background: rgba(0, 0, 0, 0.5);
     z-index: -1;
 }
 
@@ -352,7 +330,6 @@ body {
     border-right: 4px solid #ff6600;
     border-top: 4px solid #ff6600;
 }
-
 
 .testimonials-title {
     font-size: 2.5rem;

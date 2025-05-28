@@ -15,7 +15,6 @@ const Signup = () => {
     upiId: '',
     contact: ''
   });
-
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -28,7 +27,7 @@ const Signup = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
     if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
   };
 
@@ -61,43 +60,21 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setServerError('');
-    
     if (!validate()) return;
-    
+
     setIsSubmitting(true);
-    
     try {
       const response = await fetch('http://localhost:9000/signupseller', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-          shopName: formData.shopName,
-          address: formData.address,
-          category: formData.category,
-          upiId: formData.upiId,
-          contact: formData.contact
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
       });
-
       const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Signup failed');
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Signup failed');
-      }
-
-      // On successful signup
-      navigate('/loginseller', { 
-        state: { 
-          signupSuccess: true,
-          email: formData.email 
-        } 
+      navigate('/loginseller', {
+        state: { signupSuccess: true, email: formData.email }
       });
-      
     } catch (err) {
       setServerError(err.message);
     } finally {
@@ -119,17 +96,16 @@ const Signup = () => {
       particle.style.top = '0px';
       particle.style.animationDuration = `${6 + Math.random() * 5}s`;
       particle.style.opacity = Math.random().toFixed(2);
-      particle.style.width = `${4 + Math.random() * 4}px`;
-      particle.style.height = particle.style.width;
+      const size = 4 + Math.random() * 4;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
       page.appendChild(particle);
       particles.push(particle);
     }
 
     return () => {
       particles.forEach(particle => {
-        if (page.contains(particle)) {
-          page.removeChild(particle);
-        }
+        if (page.contains(particle)) page.removeChild(particle);
       });
     };
   }, []);
@@ -142,7 +118,7 @@ const Signup = () => {
         {serverError && <div className="server-error">{serverError}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="name">Name</label><br/>
+            <label htmlFor="name">Name</label><br />
             <input
               type="text"
               id="name"
@@ -156,7 +132,7 @@ const Signup = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">Email</label><br/>
+            <label htmlFor="email">Email</label><br />
             <input
               type="email"
               id="email"
@@ -172,7 +148,7 @@ const Signup = () => {
           <div className="form-group password-group">
             <label htmlFor="password">Password</label>
             <div className="password-field">
-                <input
+              <input
                 type={showPassword ? 'text' : 'password'}
                 id="password"
                 name="password"
@@ -180,16 +156,16 @@ const Signup = () => {
                 value={formData.password}
                 onChange={handleChange}
                 className={errors.password ? 'error-input' : ''}
-                />
-                <span onClick={togglePassword} className="eye-icon">
+              />
+              <span onClick={togglePassword} className="eye-icon">
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
-                </span>
+              </span>
             </div>
             {errors.password && <span className="error">{errors.password}</span>}
           </div>
 
           <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password</label><br/>
+            <label htmlFor="confirmPassword">Confirm Password</label><br />
             <div className="password-field">
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
@@ -208,7 +184,7 @@ const Signup = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="shopName">Shop Name</label><br/>
+            <label htmlFor="shopName">Shop Name</label><br />
             <input
               type="text"
               id="shopName"
@@ -222,7 +198,7 @@ const Signup = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="address">Address</label><br/>
+            <label htmlFor="address">Address</label><br />
             <input
               type="text"
               id="address"
@@ -236,7 +212,7 @@ const Signup = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="contact">Contact Number</label><br/>
+            <label htmlFor="contact">Contact Number</label><br />
             <input
               type="text"
               id="contact"
@@ -250,7 +226,7 @@ const Signup = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="category">Category</label><br/>
+            <label htmlFor="category">Category</label><br />
             <input
               type="text"
               id="category"
@@ -264,7 +240,7 @@ const Signup = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="upiId">UPI ID</label><br/>
+            <label htmlFor="upiId">UPI ID</label><br />
             <input
               type="text"
               id="upiId"

@@ -67,7 +67,6 @@ const addProduct = async (req, res) => {
     }
 };
 
-// Get all products
 const getAllProducts = async (req, res) => {
     try {
         const products = await ProductData.find();
@@ -123,7 +122,6 @@ const getProductById = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
-
 
 module.exports = {
     addProduct,

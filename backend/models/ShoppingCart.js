@@ -34,7 +34,6 @@ const shoppingCartSchema = new mongoose.Schema({
   }
 }, { collection: 'ShoppingCart' });
 
-// Auto-calculate total before saving
 shoppingCartSchema.pre('save', async function(next) {
   const cart = this;
   let total = 0;

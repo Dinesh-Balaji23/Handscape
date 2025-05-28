@@ -91,7 +91,7 @@ const SellerDashboard = () => {
   return (
     <div className="seller-dashboard-container">
       <nav className="navbar navbar-expand-lg navbar-dark" style={{ backgroundColor: 'black' }}>
-        <div className="container-fluid">
+        <div className="container">
           <a className="navbar-brand" href={`/seller-dashboard/${sellername}`} style={{ color: 'orange', fontWeight: 'bold' }}>
             Handscape (Seller)
           </a>

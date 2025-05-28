@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import './CSS/SellerOrders.css';
-import { FaBoxOpen, FaShippingFast, FaCheckCircle, FaTimesCircle, FaFilter, FaChevronDown } from 'react-icons/fa';
+import { FaBoxOpen, FaShippingFast, FaCheckCircle, FaTimesCircle, FaFilter } from 'react-icons/fa';
 
 const SellerOrders = () => {
   const { sellername } = useParams();
@@ -15,19 +15,15 @@ const SellerOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:9000/orders/seller-orders/${sellername}`
-        );
+        const response = await axios.get(`http://localhost:9000/orders/seller-orders/${sellername}`);
         setOrders(response.data);
         setError(null);
       } catch (error) {
-        console.error('Error fetching orders:', error);
         setError('Failed to load orders. Please try again.');
       } finally {
         setLoading(false);
       }
     };
-    
     fetchOrders();
   }, [sellername]);
 
@@ -38,16 +34,9 @@ const SellerOrders = () => {
 
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
-      await axios.patch('http://localhost:9000/orders/status', {
-        orderId,
-        status: newStatus
-      });
-      
-      setOrders(orders.map(order => 
-        order._id === orderId ? { ...order, status: newStatus } : order
-      ));
-    } catch (error) {
-      console.error('Error updating order status:', error);
+      await axios.patch('http://localhost:9000/orders/status', { orderId, status: newStatus });
+      setOrders(orders.map(order => (order._id === orderId ? { ...order, status: newStatus } : order)));
+    } catch {
       alert('Failed to update order status');
     }
   };
@@ -100,17 +89,17 @@ const SellerOrders = () => {
             <h2>Your Orders</h2>
             <p className="seller-name">Seller: {sellername}</p>
           </div>
-          
+
           <div className="filter-container">
             <div className="filter-dropdown">
-              <button 
+              <button
                 className="action-btn dropdown-toggle"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 <FaFilter className="filter-icon" /> &nbsp;
                 <span>{statusOptions.find(opt => opt.value === filter)?.label}</span> &nbsp;
               </button>
-              
+
               {dropdownOpen && (
                 <div className="dropdown-menu show">
                   {statusOptions.map(option => (
@@ -148,14 +137,14 @@ const SellerOrders = () => {
                     </span>
                   </div>
                 </div>
-                
+
                 <div className="order-details">
                   <div className="customer-info">
                     <p><strong>Customer:</strong> {order.userName}</p>
                     <p><strong>Order Date:</strong> {formatDate(order.bookingDate)}</p>
                     <p><strong>Estimated Delivery:</strong> {formatDate(order.estimatedDelivery)}</p>
                   </div>
-                  
+
                   <div className="items-list">
                     <h4>Items:</h4>
                     {order.items.map((item, index) => (
@@ -167,23 +156,23 @@ const SellerOrders = () => {
                       </div>
                     ))}
                   </div>
-                  
+
                   <div className="order-total">
                     <span>Total:</span>
                     <span>₹{order.totalAmount.toFixed(2)}</span>
                   </div>
                 </div>
-                
+
                 <div className="order-actions">
                   {order.status === 'Pending' && (
                     <>
-                      <button 
+                      <button
                         className="action-btn ship-btn"
                         onClick={() => updateOrderStatus(order._id, 'Shipped')}
                       >
                         Mark as Shipped
                       </button>
-                      <button 
+                      <button
                         className="action-btn cancel-btn"
                         onClick={() => updateOrderStatus(order._id, 'Cancelled')}
                       >
@@ -192,7 +181,7 @@ const SellerOrders = () => {
                     </>
                   )}
                   {order.status === 'Shipped' && (
-                    <button 
+                    <button
                       className="action-btn deliver-btn"
                       onClick={() => updateOrderStatus(order._id, 'Delivered')}
                     >

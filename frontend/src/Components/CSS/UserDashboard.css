@@ -13,77 +13,29 @@ body {
   flex-direction: column;
 }
 
-/* Navbar Container */
-/* Navbar Container */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /* Vertically center all items in the navbar */
-    background-color: #000;
-    color: white;
-    padding: 0 40px;
-    height: 80px; /* Ensure navbar has consistent height */
-    font-family: 'Poppins', sans-serif;
-  }
-  
-  /* Logo Box */
-  .logo-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    color: orange;
-    font-weight: bold;
-    font-size: 24px;
-    width: 60px;
-    height: 60px;
-    border-radius: 6px;
-  }
-  
-  /* Navbar Links Container */
-  .nav-links {
-    display: flex;
-    gap: 25px;
-    list-style: none;
-    margin-left: auto; /* Push the links to the right */
-    align-items: center; /* Vertically align the nav links */
-  }
-  
-  /* Nav Links */
-  .nav-links li a {
-    text-decoration: none;
-    color: white;
-    font-size: 18px;
-    font-weight: 500;
-    transition: color 0.3s ease;
-  }
-  
-  .nav-links li a:hover {
-    color: orange;
-  }
-  
-  /* Username */
-  .username {
-    font-size: 16px;
-    color: #ccc;
-    margin-left: 30px;
-  }
-  
-  
-  /* Logo Box (White square with orange H) */
-  .logo-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    color: orange;
-    font-weight: bold;
-    font-size: 24px;
-    width: 40px;
-    height: 40px;
-    border-radius: 6px;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000;
+  color: white;
+  padding: 0 40px;
+  height: 80px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.logo-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  color: orange;
+  font-weight: bold;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+}
 
 .logo-letter {
   color: #ff6600;
@@ -96,20 +48,28 @@ body {
   gap: 1.5rem;
   list-style: none;
   padding: 0;
+  margin-left: auto;
+  align-items: center;
 }
 
 .nav-links a {
   color: white;
   text-decoration: none;
   font-weight: 500;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: orange;
 }
 
 .username {
   font-size: 0.95rem;
   color: #ccc;
+  margin-left: 30px;
 }
 
-/* Banner */
 .banner {
   background-color: #fff3e6;
   text-align: center;
@@ -119,14 +79,15 @@ body {
 .banner h1 {
   font-size: 2.3rem;
   color: #ff6600;
+  margin: 0;
 }
 
 .banner p {
   font-size: 1.1rem;
   color: #444;
+  margin-top: 0.5rem;
 }
 
-/* Features */
 .features-section {
   padding: 3rem 2rem;
   flex: 1;
@@ -179,7 +140,6 @@ body {
   text-decoration: none;
 }
 
-/* Footer */
 .footer {
   background-color: #000;
   color: white;

@@ -11,7 +11,6 @@ const Signup = () => {
     confirmPassword: '',
     contact: ''
   });
-
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -24,23 +23,20 @@ const Signup = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const validate = () => {
     let temp = {};
-
     if (!formData.name.trim()) temp.name = "Name is required";
     if (!formData.email.trim()) temp.email = "Email is required";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) temp.email = "Invalid email format";
-
     if (!formData.password) temp.password = "Password is required";
     if (!formData.confirmPassword) temp.confirmPassword = "Please confirm password";
     if (formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword) {
       temp.confirmPassword = "Passwords do not match";
     }
     if (!formData.contact) temp.contact = "Contact number is required";
-
     setErrors(temp);
     return Object.keys(temp).length === 0;
   };
@@ -48,17 +44,12 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setServerError('');
-    
     if (!validate()) return;
-    
     setIsSubmitting(true);
-    
     try {
       const response = await fetch('http://localhost:9000/signupuser', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
@@ -66,24 +57,11 @@ const Signup = () => {
           contact: formData.contact
         }),
       });
-
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Signup failed');
-      }
-
-      // Reset form and navigate to login
-      setFormData({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        contact: ''
-      });
+      if (!response.ok) throw new Error(data.message || 'Signup failed');
+      setFormData({ name: '', email: '', password: '', confirmPassword: '', contact: '' });
       setErrors({});
       navigate('/login');
-      
     } catch (err) {
       setServerError(err.message);
     } finally {
@@ -94,7 +72,6 @@ const Signup = () => {
   useEffect(() => {
     const page = document.querySelector('.login-page');
     const numParticles = 25;
-
     for (let i = 0; i < numParticles; i++) {
       const particle = document.createElement('div');
       particle.classList.add('particle');

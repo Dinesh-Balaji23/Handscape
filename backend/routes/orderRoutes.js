@@ -17,7 +17,6 @@ router.get('/seller', getSellerOrders);
 router.route('/orders/status')
   .patch(updateOrderStatus)
   .options((req, res) => {
-    // Handle preflight requests
     res.header('Access-Control-Allow-Methods', 'PATCH');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     res.status(200).send();

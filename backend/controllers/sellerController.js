@@ -41,8 +41,8 @@ const sellerLogin = async (req, res) => {
         if (!seller) return res.status(404).json({ message: 'Seller not found' });
         if (seller.password !== password) return res.status(401).json({ message: 'Incorrect password' });
 
-        res.status(200).json({ 
-            message: 'Login successful', 
+        res.status(200).json({
+            message: 'Login successful',
             seller: {
                 id: seller._id,
                 name: seller.name,

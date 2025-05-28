@@ -26,39 +26,30 @@ const UserDashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <nav
-        className="navbar navbar-expand-lg navbar-dark"
-        style={{ backgroundColor: 'black' }}
-      >
+      <nav className="navbar navbar-expand-lg navbar-dark" style={{ backgroundColor: 'black' }}>
         <div className="container">
-          <a className="navbar-brand" href={`/user-dashboard/${username}`} style={{ color: 'orange', fontWeight: 'bold' }}>
+          <a
+            className="navbar-brand"
+            href={`/user-dashboard/${username}`}
+            style={{ color: 'orange', fontWeight: 'bold' }}
+          >
             Handscape
           </a>
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <Link to={`/user-dashboard/${username}`} className="nav-link">
-                Home
-              </Link>
+              <Link to={`/user-dashboard/${username}`} className="nav-link">Home</Link>
             </li>
             <li className="nav-item">
-              <Link to={`/products/${username}`} className="nav-link">
-                Products
-              </Link>
+              <Link to={`/products/${username}`} className="nav-link">Products</Link>
             </li>
             <li className="nav-item">
-              <Link to={`/cart/${username}`} className="nav-link">
-                Cart
-              </Link>
+              <Link to={`/cart/${username}`} className="nav-link">Cart</Link>
             </li>
             <li className="nav-item">
-              <Link to={`/orders/${username}`} className="nav-link">
-                Orders
-              </Link>
+              <Link to={`/orders/${username}`} className="nav-link">Orders</Link>
             </li>
             <li className="nav-item">
-              <Link to="/login" className="nav-link">
-                Logout ({username})
-              </Link>
+              <Link to="/login" className="nav-link">Logout ({username})</Link>
             </li>
           </ul>
         </div>
@@ -80,12 +71,12 @@ const UserDashboard = () => {
           ))}
         </div>
         <div className="browse-note">
-          <p>👉 Head over to the <Link to="/products">Products</Link> page to see our full collection!</p>
+          <p>👉 Head over to the <Link to={`/products/${username}`}>Products</Link> page to see our full collection!</p>
         </div>
       </section>
 
       <footer className="footer">
-        <p>© 2025 Handscape. </p>
+        <p>© 2025 Handscape.</p>
       </footer>
     </div>
   );

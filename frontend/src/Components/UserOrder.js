@@ -4,55 +4,40 @@ import { useParams, Link } from 'react-router-dom';
 import './CSS/Cart.css';
 
 const UserOrder = () => {
-    const { username } = useParams();
-    const [orders, setOrders] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-  
-    useEffect(() => {
-        const fetchOrders = async () => {
-          try {
-            console.log(`Fetching orders for ${username}`); // Debug log
-            const response = await axios.get(
-              `http://localhost:9000/user-orders/${username}`
-            );
-            console.log('Received orders:', response.data); // Debug log
-            setOrders(response.data);
-            setLoading(false);
-          } catch (error) {
-            console.error('Order fetch error:', error.response?.data || error.message);
-            setError('Failed to load orders. Please try again.');
-            setLoading(false);
-          }
-        };
-        
-        fetchOrders();
-      }, [username]);
+  const { username } = useParams();
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-      const handleCancelOrder = async (orderId) => {
-        try {
-          const response = await axios.patch(
-            'http://localhost:9000/orders/status',
-            {
-              orderId,
-              status: 'Cancelled'
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            }
-          );
-          
-          setOrders(orders.map(order => 
-            order._id === orderId ? { ...order, status: 'Cancelled' } : order
-          ));
-          alert('Order cancelled successfully');
-        } catch (error) {
-          console.error('Error cancelling order:', error);
-          alert(`Failed to cancel order: ${error.response?.data?.error || error.message}`);
-        }
-      };
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get(`http://localhost:9000/user-orders/${username}`);
+        setOrders(response.data);
+        setLoading(false);
+      } catch (error) {
+        setError('Failed to load orders. Please try again.');
+        setLoading(false);
+      }
+    };
+    fetchOrders();
+  }, [username]);
+
+  const handleCancelOrder = async (orderId) => {
+    try {
+      await axios.patch(
+        'http://localhost:9000/orders/status',
+        { orderId, status: 'Cancelled' },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      setOrders(orders.map(order =>
+        order._id === orderId ? { ...order, status: 'Cancelled' } : order
+      ));
+      alert('Order cancelled successfully');
+    } catch (error) {
+      alert(`Failed to cancel order: ${error.response?.data?.error || error.message}`);
+    }
+  };
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -84,17 +69,12 @@ const UserOrder = () => {
         {orders.length > 0 ? (
           <div className="orders-container">
             {orders.map((order) => (
-              <div 
-                key={order._id} 
-                className={`order-card ${order.status.toLowerCase()}`}
-              >
+              <div key={order._id} className={`order-card ${order.status.toLowerCase()}`}>
                 <div className="order-header">
                   <span className="order-id">Order #{order._id.slice(-6).toUpperCase()}</span>
-                  <span className={`order-status ${order.status.toLowerCase()}`}>
-                    {order.status}
-                  </span>
+                  <span className={`order-status ${order.status.toLowerCase()}`}>{order.status}</span>
                 </div>
-                
+
                 <div className="order-details">
                   <div className="order-meta">
                     <p><strong>Placed on:</strong> {formatDate(order.bookingDate)}</p>
@@ -102,7 +82,7 @@ const UserOrder = () => {
                     <p><strong>Seller:</strong> {order.sellerName}</p>
                     <p><strong>Payment ID:</strong> {order.paymentId}</p>
                   </div>
-                  
+
                   <div className="order-items">
                     <h4>Items:</h4>
                     {order.items.map((item, index) => (
@@ -116,18 +96,15 @@ const UserOrder = () => {
                     ))}
                   </div>
                 </div>
-                
+
                 <div className="order-footer">
                   <div className="order-total">
                     <span>Total:</span>
                     <span>₹{order.totalAmount.toFixed(2)}</span>
                   </div>
-                  
+
                   {order.status === 'Pending' && (
-                    <button 
-                      className="cancel-btn"
-                      onClick={() => handleCancelOrder(order._id)}
-                    >
+                    <button className="cancel-btn" onClick={() => handleCancelOrder(order._id)}>
                       Cancel Order
                     </button>
                   )}

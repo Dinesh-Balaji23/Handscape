@@ -8,23 +8,21 @@ const userRouter = require('./routes/userRoutes');
 const sellerRouter = require('./routes/sellerRoutes');
 const productRouter = require('./routes/productRoutes');
 const cartRouter = require('./routes/cartRoutes');
-const orderRouter = require('./routes/orderRoutes'); // Ensure this is included
-
+const orderRouter = require('./routes/orderRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 9000;
 
 app.use(cors({
   origin: 'http://localhost:3000',
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Explicitly include PATCH
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 mongoose.connect(process.env.MONGO_URI || "mongodb+srv://Dineshbalaji_A:dineshbalaji@cluster0.cwoq1.mongodb.net/Handscape?retryWrites=true&w=majority&appName=Cluster0")
-.then(() => console.log("MongoDB connected successfully via Mongoose"))
-.catch((err) => console.error("MongoDB connection error:", err.message));
-
+  .then(() => console.log("MongoDB connected successfully via Mongoose"))
+  .catch((err) => console.error("MongoDB connection error:", err.message));
 
 const fs = require('fs');
 const uploadDir = 'uploads';

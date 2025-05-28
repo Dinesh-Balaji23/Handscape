@@ -3,15 +3,14 @@ import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import './CSS/Cart.css';
 
-const loadRazorpayScript = () => {
-  return new Promise((resolve) => {
+const loadRazorpayScript = () =>
+  new Promise((resolve) => {
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
     script.onload = () => resolve(true);
     script.onerror = () => resolve(false);
     document.body.appendChild(script);
   });
-};
 
 const Cart = () => {
   const { username } = useParams();
@@ -34,18 +33,14 @@ const Cart = () => {
 
   const handleRemoveFromCart = async (productId) => {
     try {
-      await axios.delete(`http://localhost:9000/cart/remove/${productId}`, {
-        data: { username }
-      });
+      await axios.delete(`http://localhost:9000/cart/remove/${productId}`, { data: { username } });
       setCartItems(cartItems.filter(item => item.productId._id !== productId));
     } catch (error) {
       console.error('Error removing item from cart:', error);
     }
   };
 
-  const totalPrice = cartItems.reduce((total, item) => {
-    return total + item.productId.price * item.quantity;
-  }, 0);
+  const totalPrice = cartItems.reduce((total, item) => total + item.productId.price * item.quantity, 0);
 
   const handlePayment = async (totalAmount, username) => {
     const res = await loadRazorpayScript();
@@ -53,17 +48,10 @@ const Cart = () => {
       alert("Razorpay SDK failed to load. Check your connection.");
       return;
     }
-  
     try {
-      // 1. Create Razorpay order
-      const razorpayResponse = await axios.post(`http://localhost:9000/cart/${username}/razorpay`, {
-        totalAmount,
-        username
-      });
-  
+      const razorpayResponse = await axios.post(`http://localhost:9000/cart/${username}/razorpay`, { totalAmount, username });
       const { amount, id: order_id, currency } = razorpayResponse.data.order;
-  
-      // 2. Configure Razorpay options
+
       const options = {
         key: "rzp_test_8qY0PPemsA7yUW",
         amount: amount.toString(),
@@ -73,11 +61,9 @@ const Cart = () => {
         order_id,
         handler: async function (response) {
           alert("✅ Payment successful!");
-        
           try {
-            // Prepare order data with username as userId
             const orderData = {
-              userId: username,  // Using username directly
+              userId: username,
               userName: username,
               paymentId: response.razorpay_payment_id,
               razorpayOrderId: order_id,
@@ -94,45 +80,26 @@ const Cart = () => {
               totalAmount: totalPrice,
               status: "Pending"
             };
-        
-            // Create order in backend (but don't wait for response)
             axios.post("http://localhost:9000/orders", orderData)
-              .then(() => {
-                // Optional: Clear cart after order creation
-                axios.delete(`http://localhost:9000/cart/clear/${username}`)
-                  .catch(e => console.log("Cart clearing failed silently", e));
-              })
-              .catch(e => console.log("Order creation failed silently", e));
-        
-            // Immediately redirect to orders page
+              .then(() => axios.delete(`http://localhost:9000/cart/clear/${username}`))
+              .catch(() => {});
             window.location.href = `/orders/${username}`;
-        
-          } catch (error) {
-            console.error("Payment handler error:", error);
-            // Still redirect even if there's an error
+          } catch {
             window.location.href = `/orders/${username}`;
           }
         },
-        prefill: {
-          name: username,
-          email: "test@example.com",
-          contact: "9999999999"
-        },
-        theme: {
-          color: "#000000"
-        }
+        prefill: { name: username, email: "test@example.com", contact: "9999999999" },
+        theme: { color: "#000000" }
       };
-  
-      // 4. Open Razorpay payment gateway
+
       const rzp = new window.Razorpay(options);
       rzp.open();
-  
+
     } catch (error) {
       console.error("Payment initiation failed:", error);
       alert("Payment initiation failed");
     }
   };
-  
 
   if (loading) return <div className="loading">Loading cart...</div>;
 
@@ -167,7 +134,7 @@ const Cart = () => {
                 <div className="header-item">Action</div>
               </div>
 
-              {cartItems.map((item) => (
+              {cartItems.map(item => (
                 <div className="cart-row" key={item.productId._id}>
                   <div className="cart-cell product-info">
                     <span className="product-name">{item.productId.productName}</span>

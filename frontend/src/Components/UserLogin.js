@@ -13,16 +13,11 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const togglePassword = () => {
-    setShowPassword(!showPassword);
-  };
+  const togglePassword = () => setShowPassword(prev => !prev);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -33,17 +28,13 @@ const Login = () => {
     try {
       const response = await fetch('http://localhost:9000/loginuser', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
+      if (!response.ok) throw new Error(data.message || 'Login failed');
 
       localStorage.setItem('user', JSON.stringify(data.user));
       const username = data.user.name || data.user.username || 'user';
@@ -93,7 +84,6 @@ const Login = () => {
             onChange={handleChange}
             required
           />
-
           <label>Password</label>
           <div className="password-field">
             <input
@@ -108,7 +98,6 @@ const Login = () => {
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
-
           <button type="submit" disabled={loading}>
             {loading ? 'Logging in...' : 'LOGIN'}
           </button>

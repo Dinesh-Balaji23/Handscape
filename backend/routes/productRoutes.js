@@ -1,21 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const { 
-    addProduct,
-    getAllProducts,
-    getProductsBySeller,
-    updateProductRating,
-    getProductById
+const {
+  addProduct,
+  getAllProducts,
+  getProductsBySeller,
+  updateProductRating,
+  getProductById
 } = require('../controllers/productController');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname);
-    }
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
 });
 
 const upload = multer({ storage: storage });
