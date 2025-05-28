@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-const Razorpay = require('razorpay');
+require('dotenv').config();
 
 const userRouter = require('./routes/userRoutes');
 const sellerRouter = require('./routes/sellerRoutes');
@@ -10,8 +10,9 @@ const productRouter = require('./routes/productRoutes');
 const cartRouter = require('./routes/cartRoutes');
 const orderRouter = require('./routes/orderRoutes'); // Ensure this is included
 
+
 const app = express();
-const PORT = 9000;
+const PORT = process.env.PORT || 9000;
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -20,7 +21,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-mongoose.connect('mongodb://127.0.0.1:27017/Handscape')
+mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('Connection to MongoDB established');
   })
