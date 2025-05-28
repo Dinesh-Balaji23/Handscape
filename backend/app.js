@@ -21,13 +21,10 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log('Connection to MongoDB established');
-  })
-  .catch((err) => {
-    console.error('Error connecting to MongoDB:', err.message);
-  });
+mongoose.connect(process.env.MONGO_URI || "mongodb+srv://Dineshbalaji_A:dineshbalaji@cluster0.cwoq1.mongodb.net/Handscape?retryWrites=true&w=majority&appName=Cluster0")
+.then(() => console.log("MongoDB connected successfully via Mongoose"))
+.catch((err) => console.error("MongoDB connection error:", err.message));
+
 
 const fs = require('fs');
 const uploadDir = 'uploads';
