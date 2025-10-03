@@ -64,7 +64,7 @@ const Signup = () => {
 
     setIsSubmitting(true);
     try {
-      const response = await fetch('http://localhost:9000/signupseller', {
+      const response = await fetch('http://localhost:8000/signupseller', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

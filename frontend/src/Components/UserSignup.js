@@ -47,7 +47,7 @@ const Signup = () => {
     if (!validate()) return;
     setIsSubmitting(true);
     try {
-      const response = await fetch('http://localhost:9000/signupuser', {
+      const response = await fetch('http://localhost:8000/signupuser', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -11,7 +11,7 @@ const ProductList = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:9000/products');
+        const response = await axios.get('http://localhost:8000/products');
         setProducts(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -65,10 +65,10 @@ const ProductList = () => {
       <section className="product-grid">
         {products.length > 0 ? (
           products.map((product) => (
-            <div key={product._id} className="product-card">
+            <div key={product.id} className="product-card">
               <center>
                 <img
-                  src={`http://localhost:9000/${product.imagePath}`}
+                  src={`http://localhost:8000/${product.imagePath}`}
                   alt={product.productName}
                   className="product-image"
                 />
@@ -79,7 +79,7 @@ const ProductList = () => {
               <div className="product-rating">
                 <span className="review-count">({product.reviewCount} reviews)</span>
               </div>
-              <Link to={`/viewprod/${username}/${product._id}`} className="btn btn-primary">
+              <Link to={`/viewprod/${username}/${product.id}`} className="btn btn-primary">
                 View Details
               </Link>
             </div>

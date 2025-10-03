@@ -12,7 +12,7 @@ const ViewProduct = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const productRes = await axios.get(`http://localhost:9000/products/${id}`);
+        const productRes = await axios.get(`http://localhost:8000/products/${id}`);
         setProduct(productRes.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -24,11 +24,11 @@ const ViewProduct = () => {
   }, [id]);
 
   const handleAddToCart = async () => {
-    if (!product?._id) return;
+    if (!product?.id) return;
     try {
       setAddingToCart(true);
-      await axios.post('http://localhost:9000/cart/add', {
-        productId: product._id,
+      await axios.post('http://localhost:8000/cart/add', {
+        productId: product.id,
         quantity: 1,
         username: username
       });
@@ -64,7 +64,7 @@ const ViewProduct = () => {
       <div className="product-details-container">
         <div className="product-image-container">
           <img
-            src={`http://localhost:9000/${product.imagePath}`}
+            src={`http://localhost:8000/${product.imagePath}`}
             alt={product.productName}
             className="product-image"
             onError={(e) => { e.target.src = 'https://via.placeholder.com/500x500?text=Product+Image'; }}
@@ -75,7 +75,7 @@ const ViewProduct = () => {
           <h1 className="product-title">{product.productName}</h1>
 
           <div className="price-section">
-            <span className="current-price">₹{product.price.toFixed(2)}</span>
+            <span className="current-price">₹{Number(product.price).toFixed(2)}</span>
           </div>
 
           <div className="rating-section">

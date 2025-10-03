@@ -15,7 +15,7 @@ const SellerOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/orders/seller-orders/${sellername}`);
+        const response = await axios.get(`http://localhost:8000/orders/seller-orders/${sellername}`);
         setOrders(response.data);
         setError(null);
       } catch (error) {
@@ -34,8 +34,8 @@ const SellerOrders = () => {
 
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
-      await axios.patch('http://localhost:9000/orders/status', { orderId, status: newStatus });
-      setOrders(orders.map(order => (order._id === orderId ? { ...order, status: newStatus } : order)));
+      await axios.patch('http://localhost:8000/orders/status', { orderId, status: newStatus });
+      setOrders(orders.map(order => (order.id === orderId ? { ...order, status: newStatus } : order)));
     } catch {
       alert('Failed to update order status');
     }
@@ -127,9 +127,11 @@ const SellerOrders = () => {
         ) : (
           <div className="orders-list">
             {filteredOrders.map(order => (
-              <div key={order._id} className={`order-card ${order.status.toLowerCase()}`}>
+              <div key={order.id} className={`order-card ${order.status.toLowerCase()}`}>
                 <div className="order-header">
-                  <div className="order-id">Order #{order._id.slice(-6).toUpperCase()}</div>
+                    <div className="order-id">
+                      Order #{String(order.id).slice(-6).toUpperCase()}
+                    </div>
                   <div className="order-status">
                     {getStatusIcon(order.status)}
                     <span className={`status-text ${order.status.toLowerCase()}`}>
@@ -159,7 +161,7 @@ const SellerOrders = () => {
 
                   <div className="order-total">
                     <span>Total:</span>
-                    <span>₹{order.totalAmount.toFixed(2)}</span>
+                    <span>₹{Number(order.totalAmount).toFixed(2)}</span>
                   </div>
                 </div>
 
@@ -168,13 +170,13 @@ const SellerOrders = () => {
                     <>
                       <button
                         className="action-btn ship-btn"
-                        onClick={() => updateOrderStatus(order._id, 'Shipped')}
+                        onClick={() => updateOrderStatus(order.id, 'Shipped')}
                       >
                         Mark as Shipped
                       </button>
                       <button
                         className="action-btn cancel-btn"
-                        onClick={() => updateOrderStatus(order._id, 'Cancelled')}
+                        onClick={() => updateOrderStatus(order.id, 'Cancelled')}
                       >
                         Cancel Order
                       </button>
@@ -183,7 +185,7 @@ const SellerOrders = () => {
                   {order.status === 'Shipped' && (
                     <button
                       className="action-btn deliver-btn"
-                      onClick={() => updateOrderStatus(order._id, 'Delivered')}
+                      onClick={() => updateOrderStatus(order.id, 'Delivered')}
                     >
                       Mark as Delivered
                     </button>
