@@ -32,7 +32,7 @@ const SellerDashboard = () => {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/orders/seller-analytics/${sellername}`);
+        const response = await axios.get(`http://localhost:8000/orders/seller-analytics/${sellername}`);
         setAnalytics(response.data);
       } catch (error) {
         console.error('Error fetching analytics:', error);
@@ -99,7 +99,7 @@ const SellerDashboard = () => {
             <li className="nav-item"><Link to={`/seller-dashboard/${sellername}`} className="nav-link active">Home</Link></li>
             <li className="nav-item"><Link to={`/addproduct/${sellername}`} className="nav-link">Add Product</Link></li>
             <li className="nav-item"><Link to={`/seller-orders/${sellername}`} className="nav-link">Orders</Link></li>
-            <li className="nav-item"><Link to="/login" className="nav-link">Logout ({sellername})</Link></li>
+            <li className="nav-item"><Link to="/loginseller" className="nav-link">Logout ({sellername})</Link></li>
           </ul>
         </div>
       </nav>

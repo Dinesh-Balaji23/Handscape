@@ -49,7 +49,7 @@ const Login = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('http://localhost:9000/loginseller', {
+      const response = await fetch('http://localhost:8000/loginseller', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

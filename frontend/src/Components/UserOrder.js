@@ -12,7 +12,8 @@ const UserOrder = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/user-orders/${username}`);
+        const response = await axios.get(`http://localhost:8000/user-orders/${username}`);
+        console.log("Fetched orders:", response.data); // Debug
         setOrders(response.data);
         setLoading(false);
       } catch (error) {
@@ -26,12 +27,12 @@ const UserOrder = () => {
   const handleCancelOrder = async (orderId) => {
     try {
       await axios.patch(
-        'http://localhost:9000/orders/status',
+        'http://localhost:8000/orders/status',
         { orderId, status: 'Cancelled' },
         { headers: { 'Content-Type': 'application/json' } }
       );
       setOrders(orders.map(order =>
-        order._id === orderId ? { ...order, status: 'Cancelled' } : order
+        order.id === orderId ? { ...order, status: 'Cancelled' } : order
       ));
       alert('Order cancelled successfully');
     } catch (error) {
@@ -40,6 +41,7 @@ const UserOrder = () => {
   };
 
   const formatDate = (dateString) => {
+    if (!dateString) return '';
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
@@ -69,9 +71,9 @@ const UserOrder = () => {
         {orders.length > 0 ? (
           <div className="orders-container">
             {orders.map((order) => (
-              <div key={order._id} className={`order-card ${order.status.toLowerCase()}`}>
+              <div key={order.id} className={`order-card ${order.status.toLowerCase()}`}>
                 <div className="order-header">
-                  <span className="order-id">Order #{order._id.slice(-6).toUpperCase()}</span>
+                  <span className="order-id">Order #{String(order.id).slice(-6).toUpperCase()}</span>
                   <span className={`order-status ${order.status.toLowerCase()}`}>{order.status}</span>
                 </div>
 
@@ -80,31 +82,35 @@ const UserOrder = () => {
                     <p><strong>Placed on:</strong> {formatDate(order.bookingDate)}</p>
                     <p><strong>Estimated Delivery:</strong> {formatDate(order.estimatedDelivery)}</p>
                     <p><strong>Seller:</strong> {order.sellerName}</p>
-                    <p><strong>Payment ID:</strong> {order.paymentId}</p>
+                    <p><strong>Payment ID:</strong> {order.razorpayOrderId || "N/A"}</p>
                   </div>
 
                   <div className="order-items">
                     <h4>Items:</h4>
-                    {order.items.map((item, index) => (
-                      <div key={index} className="order-item">
-                        <div className="item-info">
-                          <span className="item-name">{item.productName}</span>
-                          <span className="item-quantity">Qty: {item.quantity}</span>
+                    {order.items && order.items.length > 0 ? (
+                      order.items.map((item, index) => (
+                        <div key={index} className="order-item">
+                          <div className="item-info">
+                            <span className="item-name">{item.productName}</span>
+                            <span className="item-quantity">Qty: {item.quantity}</span>
+                          </div>
+                          <span className="item-price">₹{Number(item.price || 0).toFixed(2)}</span>
                         </div>
-                        <span className="item-price">₹{item.price.toFixed(2)}</span>
-                      </div>
-                    ))}
+                      ))
+                    ) : (
+                      <p>No items in this order</p>
+                    )}
                   </div>
                 </div>
 
                 <div className="order-footer">
                   <div className="order-total">
                     <span>Total:</span>
-                    <span>₹{order.totalAmount.toFixed(2)}</span>
+                    <span>₹{Number(order.totalAmount || 0).toFixed(2)}</span>
                   </div>
 
                   {order.status === 'Pending' && (
-                    <button className="cancel-btn" onClick={() => handleCancelOrder(order._id)}>
+                    <button className="cancel-btn" onClick={() => handleCancelOrder(order.id)}>
                       Cancel Order
                     </button>
                   )}

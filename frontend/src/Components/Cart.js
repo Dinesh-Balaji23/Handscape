@@ -20,7 +20,7 @@ const Cart = () => {
   useEffect(() => {
     const fetchCartData = async () => {
       try {
-        const response = await axios.get(`http://localhost:9000/cart/${username}`);
+        const response = await axios.get(`http://localhost:8000/cart/${username}`);
         setCartItems(response.data.items);
       } catch (error) {
         console.error('Error fetching cart data:', error);
@@ -33,14 +33,14 @@ const Cart = () => {
 
   const handleRemoveFromCart = async (productId) => {
     try {
-      await axios.delete(`http://localhost:9000/cart/remove/${productId}`, { data: { username } });
-      setCartItems(cartItems.filter(item => item.productId._id !== productId));
+      await axios.delete(`http://localhost:8000/cart/remove/${productId}`, { data: { username } });
+      setCartItems(cartItems.filter(item => item.productId !== productId));
     } catch (error) {
       console.error('Error removing item from cart:', error);
     }
   };
 
-  const totalPrice = cartItems.reduce((total, item) => total + item.productId.price * item.quantity, 0);
+  const totalPrice = cartItems.reduce((total, item) => total + Number(item.price) * item.quantity, 0);
 
   const handlePayment = async (totalAmount, username) => {
     const res = await loadRazorpayScript();
@@ -49,8 +49,8 @@ const Cart = () => {
       return;
     }
     try {
-      const razorpayResponse = await axios.post(`http://localhost:9000/cart/${username}/razorpay`, { totalAmount, username });
-      const { amount, id: order_id, currency } = razorpayResponse.data.order;
+      const razorpayResponse = await axios.post(`http://localhost:8000/cart/${username}/razorpay`, { totalAmount, username });
+      const { amount, id: orderid, currency } = razorpayResponse.data.order;
 
       const options = {
         key: "rzp_test_8qY0PPemsA7yUW",
@@ -58,36 +58,40 @@ const Cart = () => {
         currency,
         name: "Handscape",
         description: "Order Payment",
-        order_id,
+        orderid,
         handler: async function (response) {
           alert("✅ Payment successful!");
           try {
-            const orderData = {
-              userId: username,
-              userName: username,
-              paymentId: response.razorpay_payment_id,
-              razorpayOrderId: order_id,
-              cartItems: cartItems.map(item => ({
-                productId: {
-                  _id: item.productId._id,
-                  productName: item.productId.productName,
-                  price: item.productId.price,
-                  sellerId: item.productId.sellerId,
-                  sellerName: item.productId.sellerName
-                },
-                quantity: item.quantity
-              })),
-              totalAmount: totalPrice,
-              status: "Pending"
-            };
-            axios.post("http://localhost:9000/orders", orderData)
-              .then(() => axios.delete(`http://localhost:9000/cart/clear/${username}`))
-              .catch(() => {});
-            window.location.href = `/orders/${username}`;
-          } catch {
-            window.location.href = `/orders/${username}`;
+              // Prepare order data with seller info
+              const orderData = {
+                  userId: username,
+                  userName: username,
+                  paymentId: response.razorpay_paymentid,
+                  razorpayOrderId: orderid,
+                  cartItems: cartItems.map(item => ({
+                      productId: item.productId,
+                      productName: item.productName,
+                      price: Number(item.price),
+                      quantity: item.quantity,
+                      sellerId: item.sellerId || 1,  // fallback if undefined
+                      sellerName: item.sellerName || "Handscape"
+                  })),
+                  totalAmount: totalPrice,
+                  status: "Pending"
+              };
+
+              // Await the POST request before redirecting
+              await axios.post("http://localhost:8000/orders", orderData);
+
+              // Clear cart
+              await axios.delete(`http://localhost:8000/cart/clear/${username}`);
+
+              // Redirect only after backend operations are complete
+              window.location.href = `/orders/${username}`;
+          } catch (err) {
+              window.location.href = `/orders/${username}`;
           }
-        },
+      },
         prefill: { name: username, email: "test@example.com", contact: "9999999999" },
         theme: { color: "#000000" }
       };
@@ -135,15 +139,15 @@ const Cart = () => {
               </div>
 
               {cartItems.map(item => (
-                <div className="cart-row" key={item.productId._id}>
+                <div className="cart-row" key={item.id}>
                   <div className="cart-cell product-info">
-                    <span className="product-name">{item.productId.productName}</span>
+                    <span className="product-name">{item.productName}</span>
                   </div>
-                  <div className="cart-cell">₹{item.productId.price.toFixed(2)}</div>
+                  <div className="cart-cell">₹{Number(item.price).toFixed(2)}</div>
                   <div className="cart-cell">{item.quantity}</div>
-                  <div className="cart-cell">₹{(item.productId.price * item.quantity).toFixed(2)}</div>
+                  <div className="cart-cell">₹{(Number(item.price) * item.quantity).toFixed(2)}</div>
                   <div className="cart-cell">
-                    <button className="remove-btn" onClick={() => handleRemoveFromCart(item.productId._id)}>Remove</button>
+                    <button className="remove-btn" onClick={() => handleRemoveFromCart(item.productId)}>Remove</button>
                   </div>
                 </div>
               ))}

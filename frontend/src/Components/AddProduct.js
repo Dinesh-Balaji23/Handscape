@@ -72,7 +72,7 @@ const AddProduct = () => {
       formDataToSend.append('price', formData.price);
       formDataToSend.append('image', formData.image);
 
-      const response = await fetch(`http://localhost:9000/addproduct/${sellername}`, {
+      const response = await fetch(`http://localhost:8000/addproduct/${sellername}`, {
         method: 'POST',
         body: formDataToSend
       });
